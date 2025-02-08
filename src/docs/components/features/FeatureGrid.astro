@@ -1,0 +1,67 @@
+---
+import { Icon } from "astro-icon/components";
+
+const title = "Key Features";
+const features = [
+	{
+		title: "Seemless Integration",
+		description: "Designed to easily integrate with other Cosmic Themes templates.",
+		icon: "tabler/sparkles",
+	},
+	{
+		title: "i18n Ready",
+		description:
+			"Internationalization support for multiple languages. Configured with a simple script.",
+		icon: "tabler/language",
+	},
+	{
+		title: "Modern Stack",
+		description: "Built with Astro 5 and Tailwind CSS 4 for optimal performance.",
+		icon: "tabler/stack-2",
+	},
+	// {
+	// 	title: "Accessible",
+	// 	description: "Designed with keyboard navigatable and accessible components.",
+	// 	icon: "tabler/accessible",
+	// },
+	// {
+	// 	title: "Dark Mode",
+	// 	description: "Seamless dark mode support with system preference detection.",
+	// 	icon: "tabler/moon-stars",
+	// },
+	{
+		title: "Search",
+		description: "Fast, keyboard-accessible search functionality with Pagefind.",
+		icon: "tabler/search",
+	},
+];
+---
+
+<div class="docs-site-container border-x py-16">
+	<div class="mx-auto max-w-4xl">
+		<div class="mb-12 text-center">
+			<h2 class="docs-h2 docs-text-gradient">{title}</h2>
+		</div>
+		<div class="grid gap-8 sm:grid-cols-2">
+			{
+				features.map((feature, index) => (
+					<div
+						class={`bg-muted border-border flex items-start gap-4 rounded-lg border p-6 md:p-8 ${
+							index % 2 === 1 ? "sm:translate-y-10" : ""
+						}`}
+					>
+						<div class="text-primary shrink-0">
+							<span class="bg-primary/10 flex size-10 items-center justify-center rounded-md">
+								<Icon name={feature.icon} class="size-5" aria-hidden="true" />
+							</span>
+						</div>
+						<div>
+							<h3 class="mb-2 font-semibold">{feature.title}</h3>
+							<p class="text-muted-foreground text-sm">{feature.description}</p>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>
