@@ -52,7 +52,7 @@ export const dataTranslations = {
  */
 export const textTranslations = {
 	en: {
-		hero_description: `A modern, fast, and feature-rich documentation theme built with Astro v5 and Tailwind CSS v4.`,
+		hero_description: `A modern, fast, and feature-rich documentation theme built with Astro v5 and Tailwind CSS v4. This theme is the documentation for itself, explore and learn!`,
 		back_to_all_posts: "Back to all posts",
 	},
 	fr: {

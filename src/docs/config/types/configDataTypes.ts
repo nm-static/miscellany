@@ -37,6 +37,7 @@ export type navItem = navLinkItem;
 export interface DocsSiteSettingsProps {
 	useViewTransitions?: boolean;
 	copyLinkButtons?: boolean;
+	pagination?: boolean;
 }
 
 // --------------------------------------------------------

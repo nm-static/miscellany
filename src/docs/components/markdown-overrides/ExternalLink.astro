@@ -4,7 +4,6 @@
  * * and also ensure the link is relative to the current locale
  * Used in docs pages so you don't have to worry about that when writing markdown / mdx
  */
-import { getRelativeLocaleUrl } from "astro:i18n";
 
 // utils
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
@@ -23,7 +22,7 @@ if (!href.includes(domain) && !href.startsWith("/") && !href.startsWith("#")) {
 	actualLink = href;
 } else {
 	// internal link, so we need to add the locale to the link
-	actualLink = getRelativeLocaleUrl(currLocale, href);
+	actualLink = href;
 }
 // remove trailing slash so IDs will work
 if (actualLink.endsWith("/") && actualLink !== "/") {

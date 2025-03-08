@@ -26,14 +26,19 @@ const { class: classList, ...rest } = Astro.props as Props;
 	>
 		<Icon name="tabler/search" class="size-5 md:hidden" aria-label="search bar" />
 		<div
-			class="bg-input text-muted-foreground hover:text-foreground mx-1 hidden h-8 gap-2 rounded-full border px-3 text-xs transition-colors md:flex"
+			class="bg-muted text-muted-foreground hover:text-foreground mx-1 hidden h-8 gap-2 rounded-full border px-3 text-xs transition-colors md:flex"
 		>
 			<div class="flex items-center gap-2">
 				<Icon name="tabler/search" class="size-3.5" aria-label="search bar" />
 				<span class="inline pb-px">Search </span>
 			</div>
-			<kbd class="flex items-center gap-1">
-				<span class="text-[10px]">⌘</span>K
+			<kbd class="flex items-center gap-0.5">
+				<Icon
+					name="tabler/command"
+					class="-mr-0.5 mb-0.5 size-3.5 max-h-full"
+					aria-label="command key"
+				/>
+				K
 			</kbd>
 		</div>
 	</DialogTrigger>
@@ -88,7 +93,7 @@ const { class: classList, ...rest } = Astro.props as Props;
 		}
 
 		.pagefind-ui__search-input {
-			@apply border-border text-foreground bg-input w-[calc(100%-5rem)] border font-normal sm:w-full;
+			@apply border-border text-foreground bg-muted w-[calc(100%-5rem)] border font-normal sm:w-full;
 
 			&:focus-visible {
 				@apply outline-foreground border ring-0 outline-2;
@@ -121,7 +126,7 @@ const { class: classList, ...rest } = Astro.props as Props;
 
 		.pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
 		.pagefind-ui__result-nested {
-			@apply bg-input relative transition;
+			@apply bg-muted relative transition;
 		}
 
 		.pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
@@ -137,7 +142,7 @@ const { class: classList, ...rest } = Astro.props as Props;
 
 		.pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):focus-within,
 		.pagefind-ui__result-nested:focus-within {
-			@apply bg-input;
+			@apply bg-muted;
 		}
 
 		.pagefind-ui__result-thumb,
@@ -193,7 +198,7 @@ const { class: classList, ...rest } = Astro.props as Props;
 		}
 
 		.pagefind-ui__button {
-			@apply border-border bg-input text-foreground hover:border-foreground font-medium;
+			@apply border-border bg-muted text-foreground hover:border-foreground font-medium;
 		}
 
 		mark {

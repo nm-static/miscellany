@@ -28,6 +28,8 @@ export const siteSettings: DocsSiteSettingsProps = {
 	useViewTransitions: false,
 	// set to "false" to disable the copy link button for headings on docs pages
 	copyLinkButtons: true,
+	// set to "false" to disable pagination on docs pages
+	pagination: true,
 };
 
 export default siteSettings;

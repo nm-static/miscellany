@@ -70,7 +70,30 @@ This theme is designed to work seamlessly with other Tailwind CSS v4 templates b
     };
     ```
 
-4. Add the docs pages to your site. 
+4. Add the mdx components to the AutoImport integration
+
+    ```ts title="astro.config.mjs" ins={7-14}
+    export default defineConfig({
+      // other config options...
+      integrations: [
+        AutoImport({
+          imports: [
+            // other imports...
+            "@/docs/components/mdx-components/Aside.astro",
+            "@/docs/components/mdx-components/Badge.astro",
+            "@/docs/components/mdx-components/Button.astro",
+            "@/docs/components/mdx-components/Steps.astro",
+            "@/docs/components/mdx-components/Tabs.astro",
+            "@/docs/components/mdx-components/TabsContent.astro",
+            "@/docs/components/mdx-components/TabsList.astro",
+            "@/docs/components/mdx-components/TabsTrigger.astro",
+          ],
+        }),
+      ],
+    });
+    ```
+
+5. Add the docs pages to your site. 
 
     From the Pathfinder theme copy the whole `src/pages/docs` folder into your site's `src/pages/docs` folder.
 
