@@ -21,7 +21,7 @@ import InterVariable from "@fontsource-variable/inter/files/inter-latin-wght-nor
 ---
 
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width" , initial-scale="1.0" />
+<meta name="viewport" content="width=device-width" initial-scale="1.0" />
 
 <!-- local font preload for better performance -->
 <link rel="preload" href={InterVariable} as="font" type="font/woff2" crossorigin="anonymous" />
@@ -41,7 +41,7 @@ import InterVariable from "@fontsource-variable/inter/files/inter-latin-wght-nor
 <!-- Theme change setup. Run early to eliminate Flash of inAccurate coloR Theme (FART) -->
 <script is:inline>
 	function initTheme() {
-		let colorTheme = localStorage.getItem("colorTheme");
+		const colorTheme = localStorage.getItem("colorTheme");
 		if (!colorTheme) {
 			// set dark theme initially
 			document.documentElement.classList.add("dark");

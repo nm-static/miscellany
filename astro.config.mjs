@@ -76,8 +76,6 @@ export default defineConfig({
 
 	// this is used by default with Starwind UI
 	experimental: {
-		svg: {
-			mode: "sprite",
-		},
+		svg: true,
 	},
 });

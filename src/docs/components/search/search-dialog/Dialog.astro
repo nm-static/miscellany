@@ -128,7 +128,11 @@ const { class: className, ...rest } = Astro.props;
 					(["input", "select", "textarea"].includes(document.activeElement.tagName.toLowerCase()) ||
 						document.activeElement.isContentEditable);
 				if ((e.metaKey === true || e.ctrlKey === true) && e.key === "k") {
-					this.dialog.dataset.state === "open" ? this.close() : this.open();
+					if (this.dialog.dataset.state === "open") {
+						this.close();
+					} else {
+						this.open();
+					}
 					e.preventDefault();
 				} else if (e.key === "/" && !(this.dialog.dataset.state === "open") && !isInput) {
 					this.open();

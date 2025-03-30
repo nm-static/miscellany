@@ -283,7 +283,11 @@ const { class: className, ...rest } = Astro.props;
 		}
 
 		private toggleSelect() {
-			this.isOpen ? this.closeSelect() : this.openSelect();
+			if (this.isOpen) {
+				this.closeSelect();
+			} else {
+				this.openSelect();
+			}
 		}
 
 		private openSelect() {
