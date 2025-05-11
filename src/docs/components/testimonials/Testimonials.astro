@@ -1,10 +1,9 @@
 ---
-// utils
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
+
 import TestimonialCard from "./TestimonialCard.astro";
 
-// data
 const currLocale = getLocaleFromUrl(Astro.url);
 const testimonialData = getTranslatedData("testimonialData", currLocale);
 ---

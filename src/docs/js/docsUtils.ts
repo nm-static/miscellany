@@ -1,8 +1,10 @@
-import type { DocSection } from "@/docs/config/types/configDataTypes";
-import { getTranslatedData } from "./translationUtils";
-import { locales, defaultLocale } from "@/docs/config/siteSettings.json";
 import { getCollection } from "astro:content";
+
+import { defaultLocale, locales } from "@/docs/config/siteSettings.json";
+import type { DocSection } from "@/docs/config/types/configDataTypes";
+
 import { filterCollectionByLanguage } from "./localeUtils";
+import { getTranslatedData } from "./translationUtils";
 
 type LocaleType = (typeof locales)[number];
 

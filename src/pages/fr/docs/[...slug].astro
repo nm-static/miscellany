@@ -1,21 +1,16 @@
 ---
 import { getCollection, render } from "astro:content";
 
-// layout
-import DocsLayout from "@/docs/layouts/DocsLayout.astro";
-
-// components
-import ExternalLink from "@/docs/components/markdown-overrides/ExternalLink.astro";
 import CustomH1 from "@/docs/components/markdown-overrides/CustomH1.astro";
 import CustomH2 from "@/docs/components/markdown-overrides/CustomH2.astro";
 import CustomH3 from "@/docs/components/markdown-overrides/CustomH3.astro";
 import CustomH4 from "@/docs/components/markdown-overrides/CustomH4.astro";
 import CustomH5 from "@/docs/components/markdown-overrides/CustomH5.astro";
 import CustomH6 from "@/docs/components/markdown-overrides/CustomH6.astro";
-
-// utils
-import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
+import ExternalLink from "@/docs/components/markdown-overrides/ExternalLink.astro";
 import { defaultLocale, siteSettings } from "@/docs/config/siteSettings.json";
+import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
+import DocsLayout from "@/docs/layouts/DocsLayout.astro";
 
 export async function getStaticPaths() {
 	const docs = await getCollection("docs", ({ data }) => {

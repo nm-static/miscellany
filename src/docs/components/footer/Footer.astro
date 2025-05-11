@@ -1,14 +1,11 @@
 ---
-// components
-import FooterLink from "./FooterLink.astro";
 import DocsLogo from "@/docs/components/docs-logo/DocsLogo.astro";
 import SocialIconSimple from "@/docs/components/social/SocialIconSimple.astro";
-
-// utils
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
 
-// data
+import FooterLink from "./FooterLink.astro";
+
 const currLocale = getLocaleFromUrl(Astro.url);
 const docsSiteData = getTranslatedData("siteData", currLocale);
 

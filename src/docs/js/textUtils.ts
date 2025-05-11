@@ -1,4 +1,4 @@
-import { locales, localeMap } from "@/docs/config/siteSettings.json";
+import { localeMap, locales } from "@/docs/config/siteSettings.json";
 
 /**
  * * returns "slugified" text.

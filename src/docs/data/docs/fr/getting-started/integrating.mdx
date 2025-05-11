@@ -32,7 +32,7 @@ This theme is designed to work seamlessly with other Tailwind CSS v4 templates b
     ```
 3. Add the docs content collection to your site's content collection config file.
 
-    ```ts title="src/content.config.ts" ins={3-30, 34}
+    ```ts title="src/content.config.ts" ins={3-31, 35}
     // other collections...
 
     const docsCollection = defineCollection({
@@ -60,6 +60,7 @@ This theme is designed to work seamlessly with other Tailwind CSS v4 templates b
             })
             .optional(),
           pagefind: z.boolean().optional(),
+          mappingKey: z.string().optional(),
           draft: z.boolean().optional(),
         }),
     });

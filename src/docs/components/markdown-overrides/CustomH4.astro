@@ -1,9 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
 
-// utils
-import { getLocalizedPathname } from "@/docs/js/translationUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedPathname } from "@/docs/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 

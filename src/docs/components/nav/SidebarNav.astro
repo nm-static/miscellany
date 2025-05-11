@@ -4,14 +4,12 @@
  */
 import { getCollection } from "astro:content";
 
-// components
-import SidebarLink from "./SidebarLink.astro";
 import { getOrderedSectionIds, getSectionTitle } from "@/docs/js/docsUtils";
-
-// utils
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
+
+import SidebarLink from "./SidebarLink.astro";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 

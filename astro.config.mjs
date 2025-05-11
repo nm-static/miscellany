@@ -1,12 +1,11 @@
-import { defineConfig } from "astro/config";
-
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
-import AutoImport from "astro-auto-import";
+import sitemap from "@astrojs/sitemap";
 import compress from "@playform/compress";
-import icon from "astro-icon";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
+import AutoImport from "astro-auto-import";
 import expressiveCode from "astro-expressive-code";
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
@@ -60,7 +59,7 @@ export default defineConfig({
 		compress({
 			HTML: true,
 			JavaScript: true,
-			CSS: true,
+			CSS: false,
 			Image: false, // astro:assets handles this. Enabling this can dramatically increase build times
 			SVG: false, // astro-icon handles this
 		}),
@@ -68,14 +67,9 @@ export default defineConfig({
 
 	vite: {
 		plugins: [tailwindcss()],
-		// stop inlining short scripts to fix issues with ClientRouter: https://github.com/withastro/astro/issues/12804
+    // stop inlining short scripts to fix issues with ClientRouter
 		build: {
 			assetsInlineLimit: 0,
 		},
-	},
-
-	// this is used by default with Starwind UI
-	experimental: {
-		svg: true,
 	},
 });

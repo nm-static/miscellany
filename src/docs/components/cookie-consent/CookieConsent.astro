@@ -9,13 +9,9 @@
  * - Cookie consent with GA4: https://webreaper.dev/posts/google-tag-manager-cookie-consent/
  */
 
-import { getRelativeLocaleUrl } from "astro:i18n";
-
-// components
 import Button from "@/docs/components/button/Button.astro";
-
-// utils
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedRoute } from "@/docs/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 ---
@@ -27,7 +23,7 @@ const currLocale = getLocaleFromUrl(Astro.url);
 		<div class="docs-markdown-content text-center">
 			<p class="text-sm lg:text-base">
 				We use cookies to improve your experience on this site. To learn more, see our <a
-					href={getRelativeLocaleUrl(currLocale, "/privacy-policy")}
+					href={getLocalizedRoute(currLocale, "/privacy-policy")}
 					class="">Privacy Policy</a
 				>.
 			</p>

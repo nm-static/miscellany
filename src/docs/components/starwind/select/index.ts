@@ -9,13 +9,13 @@ import SelectValue from "./SelectValue.astro";
 
 export {
 	Select,
-	SelectTrigger,
-	SelectValue,
 	SelectContent,
 	SelectGroup,
-	SelectLabel,
 	SelectItem,
+	SelectLabel,
 	SelectSeparator,
+	SelectTrigger,
+	SelectValue,
 };
 
 export default {

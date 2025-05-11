@@ -1,28 +1,22 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
-
-// components
-import DocsLogo from "@/docs/components/docs-logo/DocsLogo.astro";
-import NavLink from "@/docs/components/nav/NavLink.astro";
-import { Dialog, DialogContent, DialogTrigger } from "./nav-dialog";
-import ThemeToggle from "@/docs/components/theme-toggle/ThemeToggle.astro";
-import SidebarNav from "@/docs/components/nav/SidebarNav.astro";
-import LanguageSelect from "@/docs/components/language-select/LanguageSelect.astro";
-import MobileLanguageSelect from "@/docs/components/language-select/MobileLanguageSelect.astro";
-import SocialIconNav from "@/docs/components/social/SocialIconNav.astro";
-import Search from "@/docs/components/search/Search.astro";
-
-// data
-import { locales } from "@/docs/config/siteSettings.json";
-
 // icons
 import Menu from "@tabler/icons/outline/menu.svg";
 
-// utils
+import DocsLogo from "@/docs/components/docs-logo/DocsLogo.astro";
+import LanguageSelect from "@/docs/components/language-select/LanguageSelect.astro";
+import MobileLanguageSelect from "@/docs/components/language-select/MobileLanguageSelect.astro";
+import NavLink from "@/docs/components/nav/NavLink.astro";
+import SidebarNav from "@/docs/components/nav/SidebarNav.astro";
+import Search from "@/docs/components/search/Search.astro";
+import SocialIconNav from "@/docs/components/social/SocialIconNav.astro";
+import ThemeToggle from "@/docs/components/theme-toggle/ThemeToggle.astro";
+import { locales } from "@/docs/config/siteSettings.json";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedRoute } from "@/docs/js/translationUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
 
-// data
+import { Dialog, DialogContent, DialogTrigger } from "./nav-dialog";
+
 const currLocale = getLocaleFromUrl(Astro.url);
 const navData = getTranslatedData("navData", currLocale);
 const siteData = getTranslatedData("siteData", currLocale);

@@ -20,3 +20,13 @@ src/docs/data/docs/**/*.mdx
 **/.svn
 **/.hg
 **/node_modules
+
+# Lockfiles
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Scripts
+scripts/
+docs/scripts/
+

@@ -1,5 +1,4 @@
-// data
-import { locales, defaultLocale } from "@/docs/config/siteSettings.json";
+import { defaultLocale, locales } from "@/docs/config/siteSettings.json";
 
 /**
  * * returns the current locale gathered from the URL

@@ -1,10 +1,9 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
 import type { ComponentProps } from "astro/types";
-import Badge from "@/docs/components/mdx-components/Badge.astro";
 
-// utils
+import Badge from "@/docs/components/mdx-components/Badge.astro";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedRoute } from "@/docs/js/translationUtils";
 
 /**
  * Compares two paths ensuring they both have trailing slashes for consistency
@@ -30,7 +29,7 @@ const { link, text, badge } = Astro.props;
 const currLocale = getLocaleFromUrl(Astro.url);
 
 // internal link, so we need to add the locale to the link
-let actualLink = getRelativeLocaleUrl(currLocale, link);
+let actualLink = getLocalizedRoute(currLocale, link);
 
 // remove trailing slash so IDs will work
 if (actualLink.endsWith("/") && actualLink !== "/") {

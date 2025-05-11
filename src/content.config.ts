@@ -1,5 +1,5 @@
+import { file, glob } from "astro/loaders";
 import { defineCollection, reference, z } from "astro:content";
-import { glob, file } from "astro/loaders";
 
 // docs
 const docsCollection = defineCollection({
@@ -27,6 +27,7 @@ const docsCollection = defineCollection({
 				})
 				.optional(),
 			pagefind: z.boolean().optional(),
+			mappingKey: z.string().optional(),
 			draft: z.boolean().optional(),
 		}),
 });

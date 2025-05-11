@@ -1,7 +1,6 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
-
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedRoute } from "@/docs/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 
@@ -26,7 +25,7 @@ const { prev, next } = Astro.props;
 	{
 		prev && (
 			<a
-				href={getRelativeLocaleUrl(currLocale, `/docs/${prev.slug}`)}
+				href={getLocalizedRoute(currLocale, `/docs/${prev.slug}`)}
 				class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
 			>
 				<ChevronLeft class="size-4 transition-transform group-hover:-translate-x-1" />
@@ -38,7 +37,7 @@ const { prev, next } = Astro.props;
 	{
 		next && (
 			<a
-				href={getRelativeLocaleUrl(currLocale, `/docs/${next.slug}`)}
+				href={getLocalizedRoute(currLocale, `/docs/${next.slug}`)}
 				class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
 			>
 				{next.title}

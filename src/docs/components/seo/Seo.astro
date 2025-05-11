@@ -3,16 +3,13 @@ import { getImage } from "astro:assets";
 import { type CollectionEntry } from "astro:content";
 import { SEO } from "astro-seo";
 
-// utils
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
 
-// data
+import HrefLang from "./HrefLang.astro";
+
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
-
-// component import
-import HrefLang from "./HrefLang.astro";
 
 interface Props {
 	title: string;

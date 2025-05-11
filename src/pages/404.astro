@@ -1,18 +1,12 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import astronaut from "@images/404/astronaut-nobg.png";
 import { Image } from "astro:assets";
 
-// main layout
+import Button from "@/docs/components/button/Button.astro";
+import { getLocaleFromUrl } from "@/docs/js/localeUtils";
+import { getLocalizedRoute } from "@/docs/js/translationUtils";
 import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
 import Docs404Layout from "@/docs/layouts/Docs404Layout.astro";
-
-// components
-import Button from "@/docs/components/button/Button.astro";
-
-// utils
-import { getLocaleFromUrl } from "@/docs/js/localeUtils";
-
-import astronaut from "@images/404/astronaut-nobg.png";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 ---
@@ -47,7 +41,7 @@ const currLocale = getLocaleFromUrl(Astro.url);
 					<!-- Action Buttons -->
 					<div class="flex flex-wrap justify-center gap-4">
 						<Button
-							href={getRelativeLocaleUrl(currLocale, "/docs/getting-started/")}
+							href={getLocalizedRoute(currLocale, "/docs/getting-started/")}
 							variant="secondary"
 						>
 							Return Home
@@ -122,7 +116,8 @@ const currLocale = getLocaleFromUrl(Astro.url);
 	.stars {
 		background: transparent;
 		animation: twinkle 4s ease-in-out infinite;
-		background-image: radial-gradient(1px 1px at 13% 17%, white, rgba(0, 0, 0, 0)),
+		background-image:
+			radial-gradient(1px 1px at 13% 17%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(1px 1px at 28% 42%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(2px 2px at 35% 75%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(1px 1px at 45% 23%, white, rgba(0, 0, 0, 0)),
@@ -138,7 +133,8 @@ const currLocale = getLocaleFromUrl(Astro.url);
 		background: transparent;
 		animation: twinkle 6s ease-in-out infinite;
 		animation-delay: 1s;
-		background-image: radial-gradient(2px 2px at 8% 72%, white, rgba(0, 0, 0, 0)),
+		background-image:
+			radial-gradient(2px 2px at 8% 72%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(2px 2px at 24% 93%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(2px 2px at 42% 12%, white, rgba(0, 0, 0, 0)),
 			radial-gradient(2px 2px at 53% 55%, white, rgba(0, 0, 0, 0)),

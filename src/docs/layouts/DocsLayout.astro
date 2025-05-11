@@ -1,21 +1,17 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-// layout
-import BaseLayoutDocs from "./BaseLayoutDocs.astro";
-
-// components
+import SidebarCta from "@/docs/components/cta/SidebarCta.astro";
+import DocsPagination from "@/docs/components/nav/DocsPagination.astro";
 import Nav from "@/docs/components/nav/Nav.astro";
 import SidebarNav from "@/docs/components/nav/SidebarNav.astro";
-import TocLink from "@/docs/components/table-of-contents/TocLink.astro";
 import TableOfContents from "@/docs/components/table-of-contents/TableOfContents.astro";
-import DocsPagination from "@/docs/components/nav/DocsPagination.astro";
-import SidebarCta from "@/docs/components/cta/SidebarCta.astro";
-
-// utils
+import TocLink from "@/docs/components/table-of-contents/TocLink.astro";
+import { siteSettings } from "@/docs/config/siteSettings.json";
 import { getAdjacentPages } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
-import { siteSettings } from "@/docs/config/siteSettings.json";
+
+import BaseLayoutDocs from "./BaseLayoutDocs.astro";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 
@@ -115,31 +111,29 @@ const { prev, next } = await getAdjacentPages(doc.id, currLocale);
 </BaseLayoutDocs>
 
 <style>
-	@layer utilities {
-		/* Mobile Table of Contents dropdown styles */
-		.mobile-toc summary::before {
-			--details-marker-size: 1.25rem;
+	/* Mobile Table of Contents dropdown styles */
+	.mobile-toc summary::before {
+		--details-marker-size: 1.25rem;
 
-			background-color: currentColor;
-			content: "";
-			display: inline-block;
-			height: var(--details-marker-size);
-			width: var(--details-marker-size);
-			margin-inline: calc((var(--details-marker-size) / 4) * -1) 0.25rem;
-			vertical-align: middle;
-			/* vertical-align: -0.25rem; */
-			-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
-			mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
-			-webkit-mask-repeat: no-repeat;
-			mask-repeat: no-repeat;
+		background-color: currentColor;
+		content: "";
+		display: inline-block;
+		height: var(--details-marker-size);
+		width: var(--details-marker-size);
+		margin-inline: calc((var(--details-marker-size) / 4) * -1) 0.25rem;
+		vertical-align: middle;
+		/* vertical-align: -0.25rem; */
+		-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
+		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.mobile-toc summary::before {
+			transition: transform 0.2s ease-in-out;
 		}
-		@media (prefers-reduced-motion: no-preference) {
-			.mobile-toc summary::before {
-				transition: transform 0.2s ease-in-out;
-			}
-		}
-		.mobile-toc[open] > summary::before {
-			transform: rotateZ(90deg);
-		}
+	}
+	.mobile-toc[open] > summary::before {
+		transform: rotateZ(90deg);
 	}
 </style>
