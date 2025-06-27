@@ -9,13 +9,13 @@ import DialogTrigger from "./DialogTrigger.astro";
 
 export {
 	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
 	DialogTrigger,
+	DialogContent,
+	DialogHeader,
+	DialogFooter,
+	DialogTitle,
+	DialogDescription,
+	DialogClose,
 };
 
 export default {
