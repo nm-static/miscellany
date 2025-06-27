@@ -1,6 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
-
+import ArrowUpRight from "@tabler/icons/outline/arrow-up-right.svg";
 import type { navLinkItem } from "@/docs/config/types/configDataTypes";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
@@ -55,13 +54,5 @@ const currentPath = comparePathsWithTrailingSlash(Astro.url.pathname, actualLink
 	aria-label={text}
 >
 	{text}
-	{
-		newTab && (
-			<Icon
-				name="tabler/arrow-up-right"
-				class="absolute top-1.5 -right-0.5 size-2.5"
-				aria-hidden="true"
-			/>
-		)
-	}
+	{newTab && <ArrowUpRight class="absolute top-1.5 -right-0.5 size-2.5" aria-hidden="true" />}
 </a>
