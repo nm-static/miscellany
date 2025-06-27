@@ -30,6 +30,8 @@ export const siteSettings: DocsSiteSettingsProps = {
 	copyLinkButtons: true,
 	// set to "false" to disable pagination on docs pages
 	pagination: true,
+	// the base route for docs pages. Defaults to "docs"
+	docsRoute: "my-docs-route",
 };
 
 export default siteSettings;

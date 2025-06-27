@@ -1,6 +1,7 @@
 ---
 import DocsLogo from "@/docs/components/docs-logo/DocsLogo.astro";
 import SocialIconSimple from "@/docs/components/social/SocialIconSimple.astro";
+import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
 
@@ -18,8 +19,8 @@ interface FooterLinkItem {
 }
 
 const docLinks: FooterLinkItem[] = [
-	{ label: "Getting Started", href: "/docs/getting-started", newTab: false },
-	{ label: "Components", href: "/docs/components", newTab: false },
+	{ label: "Getting Started", href: `/${docsRoute}/getting-started`, newTab: false },
+	{ label: "Components", href: `/${docsRoute}/components`, newTab: false },
 	{ label: "Get Pathfinder", href: "https://cosmicthemes.com/themes/pathfinder", newTab: true },
 ];
 

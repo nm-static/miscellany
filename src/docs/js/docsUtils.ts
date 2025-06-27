@@ -1,12 +1,14 @@
 import { getCollection } from "astro:content";
 
-import { defaultLocale, locales } from "@/docs/config/siteSettings.json";
+import { defaultLocale, locales, siteSettings } from "@/docs/config/siteSettings.json";
 import type { DocSection } from "@/docs/config/types/configDataTypes";
 
 import { filterCollectionByLanguage } from "./localeUtils";
 import { getTranslatedData } from "./translationUtils";
 
 type LocaleType = (typeof locales)[number];
+
+export const docsRoute = (siteSettings.docsRoute || "docs").replace(/^\/|\/$/g, "");
 
 // Cache for translated sections to avoid repeated data fetching
 const sectionCache = new Map<LocaleType, DocSection[]>();

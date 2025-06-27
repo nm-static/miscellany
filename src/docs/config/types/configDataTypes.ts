@@ -38,6 +38,7 @@ export interface DocsSiteSettingsProps {
 	useViewTransitions?: boolean;
 	copyLinkButtons?: boolean;
 	pagination?: boolean;
+	docsRoute?: string;
 }
 
 // --------------------------------------------------------

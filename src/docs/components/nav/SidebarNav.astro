@@ -4,7 +4,7 @@
  */
 import { getCollection } from "astro:content";
 
-import { getOrderedSectionIds, getSectionTitle } from "@/docs/js/docsUtils";
+import { docsRoute, getOrderedSectionIds, getSectionTitle } from "@/docs/js/docsUtils";
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
@@ -31,7 +31,7 @@ const docsBySection = filteredDocs.reduce(
 		}
 		acc[section].push({
 			text: doc.data.sidebar?.label ? doc.data.sidebar.label : doc.data.title,
-			link: `/docs/${doc.id}`,
+			link: `/${docsRoute}/${doc.id}`,
 			order: doc.data.sidebar?.order,
 			badge: doc.data.sidebar?.badge,
 		});

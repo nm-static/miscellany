@@ -1,5 +1,6 @@
 ---
 import Button from "@/docs/components/button/Button.astro";
+import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
 import { useTranslations } from "@/docs/js/translationUtils";
@@ -54,10 +55,13 @@ const t = useTranslations(currLocale);
 			{t("hero_description")}
 		</p>
 		<div class="flex flex-wrap items-center justify-center gap-4">
-			<Button href={getLocalizedRoute(currLocale, "/docs/getting-started")} variant="secondary">
+			<Button
+				href={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
+				variant="secondary"
+			>
 				Get Started
 			</Button>
-			<Button href={getLocalizedRoute(currLocale, "/docs/components")} variant="ghost">
+			<Button href={getLocalizedRoute(currLocale, `/${docsRoute}/components`)} variant="ghost">
 				Components
 			</Button>
 		</div>

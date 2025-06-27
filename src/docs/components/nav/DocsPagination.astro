@@ -1,4 +1,5 @@
 ---
+import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
 
@@ -25,7 +26,7 @@ const { prev, next } = Astro.props;
 	{
 		prev && (
 			<a
-				href={getLocalizedRoute(currLocale, `/docs/${prev.slug}`)}
+				href={getLocalizedRoute(currLocale, `/${docsRoute}/${prev.slug}`)}
 				class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
 			>
 				<ChevronLeft class="size-4 transition-transform group-hover:-translate-x-1" />
@@ -37,7 +38,7 @@ const { prev, next } = Astro.props;
 	{
 		next && (
 			<a
-				href={getLocalizedRoute(currLocale, `/docs/${next.slug}`)}
+				href={getLocalizedRoute(currLocale, `/${docsRoute}/${next.slug}`)}
 				class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
 			>
 				{next.title}
