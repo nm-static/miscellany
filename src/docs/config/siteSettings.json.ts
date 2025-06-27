@@ -31,7 +31,7 @@ export const siteSettings: DocsSiteSettingsProps = {
 	// set to "false" to disable pagination on docs pages
 	pagination: true,
 	// the base route for docs pages. Defaults to "docs"
-	docsRoute: "my-docs-route",
+	docsRoute: "docs",
 };
 
 export default siteSettings;
