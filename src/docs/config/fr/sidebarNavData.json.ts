@@ -39,12 +39,12 @@ const sidebarNavData: DocsSidebarNavData = {
 			// Ordered list of sidebar sections for the 'api' tab
 			sections: [
 				{
-					id: "getting-started",
-					title: "Commencer",
+					id: "endpoints",
+					title: "Points de terminaison",
 				},
 				{
-					id: "reference",
-					title: "Référence",
+					id: "authentication",
+					title: "Authentification",
 				},
 			],
 		},
@@ -56,8 +56,8 @@ const sidebarNavData: DocsSidebarNavData = {
 			// Ordered list of sidebar sections for the 'tutorials' tab
 			sections: [
 				{
-					id: "getting-started",
-					title: "Commencer",
+					id: "tips-and-tricks",
+					title: "Conseils et astuces",
 				},
 			],
 		},

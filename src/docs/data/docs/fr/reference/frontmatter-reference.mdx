@@ -29,6 +29,7 @@ The title of the page. This appears at the top of the page and in the navigation
 ```yaml
 ---
 description: A brief description of the page content
+section: "docs-section"
 sidebar:
   label: Custom Label
   order: 1
@@ -48,6 +49,14 @@ draft: true
 - **Type:** `string`
 
 A brief description of the page content. This is used for SEO purposes and should concisely summarize what users will find on the page.
+
+### section
+
+- **Type:** `string`
+
+The section that the page belongs to. This is used to group pages together in the navigation. Separate groups will have a link at the top of the sidebar which allows users to navigate to the first page in that section. Each section has separate sidebars for organization purposes.
+
+Any pages not configured with a section will be included in the "main" section.
 
 ### sidebar
 
@@ -103,6 +112,7 @@ When set to `true`, the page will not be published in production. This is useful
 ---
 title: My Documentation Page
 description: A comprehensive guide to using our product's API
+section: "api"
 sidebar:
   label: API Guide
   order: 2
