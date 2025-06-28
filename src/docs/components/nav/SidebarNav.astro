@@ -36,25 +36,20 @@ const firstPagesMap = new Map();
 // get rid of pages from other languages and remove locale from slug
 const filteredDocs = filterCollectionByLanguage(allDocs, currLocale);
 
-// Get the current section configuration
-const currentSection = sidebarSections?.find((s) => s.id === sectionId) || {
-	id: "main",
-	title: "Documentation",
-};
-
 // Filter docs by their section property if documentation tabs are configured
 const sectionFilteredDocs = sidebarSections
 	? filteredDocs.filter((doc) => doc.data.section === sectionId)
 	: filteredDocs;
 
 // Find the first page for each section
-if (sidebarSections) {
-	for (const section of sidebarSections) {
-		// Get docs for this section
-		const sectionDocs = sectionFilteredDocs.filter((doc) => doc.data.section === section.id);
+if (sidebarTabs) {
+	// For each tab (documentation section)
+	for (const tab of sidebarTabs) {
+		// Get all docs for this tab section
+		const tabDocs = filteredDocs.filter((doc) => doc.data.section === tab.id);
 
 		// Sort by sidebar order if available
-		const sortedDocs = [...sectionDocs].sort((a, b) => {
+		const sortedDocs = [...tabDocs].sort((a, b) => {
 			// If both have order, sort by order
 			if (a.data.sidebar?.order !== undefined && b.data.sidebar?.order !== undefined) {
 				return a.data.sidebar.order - b.data.sidebar.order;
@@ -70,10 +65,11 @@ if (sidebarSections) {
 
 		// If there are docs in this section, store the first page's URL
 		if (sortedDocs.length > 0) {
-			firstPagesMap.set(section.id, `/${docsRoute}/${sortedDocs[0].id}`);
+			const firstPageUrl = `/${docsRoute}/${sortedDocs[0].id}`;
+			firstPagesMap.set(tab.id, firstPageUrl);
 		} else {
 			// Fallback to section base route if no docs
-			firstPagesMap.set(section.id, `/${docsRoute}`);
+			firstPagesMap.set(tab.id, `/${docsRoute}`);
 		}
 	}
 }
