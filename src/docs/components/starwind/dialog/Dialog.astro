@@ -11,10 +11,6 @@ const { class: className, ...rest } = Astro.props;
 </div>
 
 <script>
-	/**
-	 * Handles the functionality of a dialog component
-	 * Manages state, animations, and accessibility
-	 */
 	class DialogHandler {
 		private trigger: HTMLButtonElement;
 		private dialog: HTMLDialogElement;
@@ -94,7 +90,11 @@ const { class: className, ...rest } = Astro.props;
 			// Add click handlers to all close buttons
 			this.closeButtons?.forEach((button) => {
 				button.addEventListener("click", () => {
-					this.close();
+					// Only close if this is the topmost dialog
+					const openDialogs = document.querySelectorAll("dialog[open]");
+					if (openDialogs.length > 0 && openDialogs[openDialogs.length - 1] === this.dialog) {
+						this.close();
+					}
 				});
 			});
 
@@ -108,7 +108,11 @@ const { class: className, ...rest } = Astro.props;
 					e.clientY <= dialogDimensions.bottom;
 
 				if (!clickedInDialog) {
-					this.close();
+					// Only close if this is the topmost dialog
+					const openDialogs = document.querySelectorAll("dialog[open]");
+					if (openDialogs.length > 0 && openDialogs[openDialogs.length - 1] === this.dialog) {
+						this.close();
+					}
 				}
 			});
 
@@ -117,7 +121,11 @@ const { class: className, ...rest } = Astro.props;
 				if (e.key === "Escape") {
 					// prevent default dialog closing behavior so we can add closing animation
 					e.preventDefault();
-					this.close();
+					// Only close if this is the topmost dialog
+					const openDialogs = document.querySelectorAll("dialog[open]");
+					if (openDialogs.length > 0 && openDialogs[openDialogs.length - 1] === this.dialog) {
+						this.close();
+					}
 				}
 			});
 
@@ -134,7 +142,11 @@ const { class: className, ...rest } = Astro.props;
 					 */
 					if (form.method === "dialog") {
 						e.preventDefault();
-						this.close();
+						// Only close if this is the topmost dialog
+						const openDialogs = document.querySelectorAll("dialog[open]");
+						if (openDialogs.length > 0 && openDialogs[openDialogs.length - 1] === this.dialog) {
+							this.close();
+						}
 					}
 				});
 			});
@@ -157,7 +169,7 @@ const { class: className, ...rest } = Astro.props;
 			setTimeout(() => {
 				this.backdrop.classList.add("hidden");
 				this.dialog.close();
-			}, this.animationDuration - 10);
+			}, this.animationDuration);
 		}
 	}
 

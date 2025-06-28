@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import Link from "@tabler/icons/outline/link.svg";
 
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedPathname } from "@/docs/js/translationUtils";
@@ -24,7 +24,7 @@ const domain = Astro.url.origin + getLocalizedPathname(currLocale, Astro.url); /
 		data-clipboard-text={domain + "#" + id}
 		aria-label="Copy heading link"
 	>
-		<Icon name="tabler/link" class="-mb-0.5 size-5 transition-colors" />
+		<Link class="-mb-0.5 size-5 transition-colors" />
 	</button>
 </h6>
 

@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 
 import SidebarCta from "@/docs/components/cta/SidebarCta.astro";
 import DocsPagination from "@/docs/components/nav/DocsPagination.astro";
-import Nav from "@/docs/components/nav/Nav.astro";
 import SidebarNav from "@/docs/components/nav/SidebarNav.astro";
 import TableOfContents from "@/docs/components/table-of-contents/TableOfContents.astro";
 import TocLink from "@/docs/components/table-of-contents/TocLink.astro";
@@ -18,9 +17,10 @@ const currLocale = getLocaleFromUrl(Astro.url);
 interface Props {
 	doc: CollectionEntry<"docs">;
 	headings?: import("astro").MarkdownHeading[];
+	sectionId?: string;
 }
 
-const { doc, headings = [] } = Astro.props;
+const { doc, headings = [], sectionId = "main" } = Astro.props;
 const { title, description = "", sidebar, tableOfContents, pagefind = true } = doc.data;
 
 const minHeadingLevel = tableOfContents?.minHeadingLevel ?? 2;
@@ -31,11 +31,11 @@ const filteredHeadings = headings.filter(
 	(heading) => heading.depth <= maxHeadingLevel && heading.depth >= minHeadingLevel,
 );
 
-// Get adjacent pages
-const { prev, next } = await getAdjacentPages(doc.id, currLocale);
+// Get adjacent pages - only from the current section
+const { prev, next } = await getAdjacentPages(doc.id, currLocale, sectionId);
 ---
 
-<BaseLayoutDocs title={title} description={description}>
+<BaseLayoutDocs title={title} description={description} sectionId={sectionId}>
 	<div
 		class="docs-site-container min-h-[calc(100vh-var(--nav-height))] flex-1 border-x md:grid md:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[240px_minmax(0,1fr)_240px] lg:gap-10 2xl:grid-cols-[240px_minmax(0,1fr)_280px]"
 	>
@@ -45,7 +45,7 @@ const { prev, next } = await getAdjacentPages(doc.id, currLocale);
 				<div
 					class="max-h-[calc(100vh-var(--nav-height))] overflow-y-auto pt-(--main-content-pt) pb-4"
 				>
-					<SidebarNav />
+					<SidebarNav sectionId={sectionId} />
 				</div>
 			</div>
 		</aside>

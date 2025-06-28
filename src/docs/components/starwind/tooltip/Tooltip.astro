@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
 
 type Props = HTMLAttributes<"div"> & {
 	/**
@@ -16,8 +17,10 @@ type Props = HTMLAttributes<"div"> & {
 	disableHoverableContent?: boolean;
 };
 
+const tooltip = tv({ base: "starwind-tooltip relative inline-block" });
+
 const {
-	openDelay = 500,
+	openDelay = 200,
 	closeDelay = 200,
 	disableHoverableContent = false,
 	class: className,
@@ -25,7 +28,7 @@ const {
 ---
 
 <div
-	class:list={["starwind-tooltip relative inline-block", className]}
+	class={tooltip({ class: className })}
 	data-state="closed"
 	data-open-delay={openDelay}
 	data-close-delay={closeDelay}
@@ -159,7 +162,7 @@ const {
 				setTimeout(() => {
 					if (!this.content) return;
 					this.content.style.display = "none";
-				}, this.animationDuration - 10);
+				}, this.animationDuration);
 				this.content.setAttribute("data-state", "closed");
 				return;
 			}
@@ -170,7 +173,7 @@ const {
 					setTimeout(() => {
 						if (!this.content) return;
 						this.content.style.display = "none";
-					}, this.animationDuration - 10);
+					}, this.animationDuration);
 					if (!this.content) return;
 					this.content.setAttribute("data-state", "closed");
 					this.closeTimerRef = null;
@@ -217,15 +220,17 @@ const {
 		}
 	}
 
-	// Initialize tooltips
-	const initTooltips = () => {
-		document.querySelectorAll(".starwind-tooltip").forEach((tooltip, idx) => {
-			new TooltipHandler(tooltip as HTMLElement, idx);
+	// Store instances in a WeakMap to avoid memory leaks
+	const tooltipInstances = new WeakMap<HTMLElement, TooltipHandler>();
+
+	const setupTooltips = () => {
+		document.querySelectorAll<HTMLElement>(".starwind-tooltip").forEach((tooltip, idx) => {
+			if (!tooltipInstances.has(tooltip)) {
+				tooltipInstances.set(tooltip, new TooltipHandler(tooltip, idx));
+			}
 		});
 	};
 
-	initTooltips();
-
-	// Handle view transitions
-	document.addEventListener("astro:after-swap", initTooltips);
+	setupTooltips();
+	document.addEventListener("astro:after-swap", setupTooltips);
 </script>

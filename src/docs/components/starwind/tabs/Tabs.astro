@@ -1,16 +1,19 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"div"> {
 	defaultValue?: string;
 	syncKey?: string;
 }
 
+const tabs = tv({ base: "starwind-tabs" });
+
 const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 ---
 
 <div
-	class:list={["starwind-tabs", className]}
+	class={tabs({ class: className })}
 	data-default-value={defaultValue}
 	data-sync-key={syncKey}
 	{...rest}
@@ -31,19 +34,23 @@ const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 
 	class TabsHandler {
 		private tabs: HTMLElement;
-		private triggers: HTMLElement[];
+		private triggers: HTMLButtonElement[];
 		private contents: HTMLElement[];
 		private currentTabIndex: number = 0;
 		private tabsId: string;
 		private syncKey?: string;
 		private storageKey: string;
-		private valueToTriggerMap: Map<string, HTMLElement>;
+		private valueToTriggerMap: Map<string, HTMLButtonElement>;
 		private valueToContentMap: Map<string, HTMLElement>;
+		private parentHandler: TabsHandler | null = null;
 
-		constructor(tabs: HTMLElement, idx: number) {
+		constructor(tabs: HTMLElement, idx: number, parentHandler: TabsHandler | null = null) {
 			this.tabs = tabs;
-			this.triggers = Array.from(tabs.querySelectorAll("[data-tabs-trigger]"));
-			this.contents = Array.from(tabs.querySelectorAll("[data-tabs-content]"));
+			this.parentHandler = parentHandler;
+			this.triggers = Array.from(
+				tabs.querySelectorAll(":scope > [data-tabs-list] > [data-tabs-trigger]"),
+			);
+			this.contents = Array.from(tabs.querySelectorAll(":scope > [data-tabs-content]"));
 			this.tabsId = `starwind-tabs${idx}`;
 			this.syncKey = tabs.dataset.syncKey;
 			this.storageKey = this.syncKey
@@ -124,31 +131,55 @@ const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 			if (!this.syncKey) return;
 
 			document.dispatchEvent(
-				new CustomEvent(`starwind-tabs-sync:${this.syncKey}`, {
-					detail: { value },
-				}),
+				new CustomEvent(`starwind-tabs-sync:${this.syncKey}`, { detail: { value } }),
 			);
 
 			localStorage.setItem(this.storageKey, value);
 		}
 
-		private handleKeyNavigation = (e: KeyboardEvent, trigger: HTMLElement): void => {
+		private handleKeyNavigation = (e: KeyboardEvent): void => {
 			const key = e.key;
 			let newIndex = this.currentTabIndex;
 
 			switch (key) {
-				case "ArrowRight":
-					newIndex = (this.currentTabIndex + 1) % this.triggers.length;
+				case "ArrowRight": {
+					for (let i = 1; i < this.triggers.length; i++) {
+						const index = (this.currentTabIndex + i) % this.triggers.length;
+						if (!this.triggers[index].disabled) {
+							newIndex = index;
+							break;
+						}
+					}
 					break;
-				case "ArrowLeft":
-					newIndex = (this.currentTabIndex - 1 + this.triggers.length) % this.triggers.length;
+				}
+				case "ArrowLeft": {
+					for (let i = 1; i < this.triggers.length; i++) {
+						const index = (this.currentTabIndex - i + this.triggers.length) % this.triggers.length;
+						if (!this.triggers[index].disabled) {
+							newIndex = index;
+							break;
+						}
+					}
 					break;
-				case "Home":
-					newIndex = 0;
+				}
+				case "Home": {
+					for (let i = 0; i < this.triggers.length; i++) {
+						if (!this.triggers[i].disabled) {
+							newIndex = i;
+							break;
+						}
+					}
 					break;
-				case "End":
-					newIndex = this.triggers.length - 1;
+				}
+				case "End": {
+					for (let i = this.triggers.length - 1; i >= 0; i--) {
+						if (!this.triggers[i].disabled) {
+							newIndex = i;
+							break;
+						}
+					}
 					break;
+				}
 				default:
 					return;
 			}
@@ -179,7 +210,7 @@ const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 		private addEventListeners(): void {
 			this.triggers.forEach((trigger, index) => {
 				trigger.addEventListener("click", () => this.handleClick(trigger, index));
-				trigger.addEventListener("keydown", (e) => this.handleKeyNavigation(e, trigger));
+				trigger.addEventListener("keydown", (e) => this.handleKeyNavigation(e));
 			});
 		}
 
@@ -201,6 +232,20 @@ const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 				c.setAttribute("data-state", isActive ? "active" : "inactive");
 				c.hidden = !isActive;
 			});
+
+			// Initialize any nested tabs in the active content
+			if (content.hasAttribute("data-state") && content.getAttribute("data-state") === "active") {
+				const nestedTabs = content.querySelectorAll<HTMLElement>(".starwind-tabs");
+
+				nestedTabs.forEach((nestedTab, nestedIdx) => {
+					// Skip tabs that already have instances
+					if (!tabInstances.has(nestedTab)) {
+						const uniqueIdx = 1000 + nestedIdx;
+						const handler = new TabsHandler(nestedTab, uniqueIdx, this);
+						tabInstances.set(nestedTab, handler);
+					}
+				});
+			}
 		}
 	}
 
@@ -208,8 +253,11 @@ const { defaultValue, syncKey, class: className, ...rest } = Astro.props;
 	const tabInstances = new WeakMap<HTMLElement, TabsHandler>();
 
 	const setupTabs = () => {
+		// First handle top-level tabs
 		document.querySelectorAll<HTMLElement>(".starwind-tabs").forEach((tabs, idx) => {
-			if (!tabInstances.has(tabs)) {
+			// Skip tabs that are nested within other tab contents
+			const isNested = !!tabs.closest("[data-tabs-content]");
+			if (!isNested && !tabInstances.has(tabs)) {
 				tabInstances.set(tabs, new TabsHandler(tabs, idx));
 			}
 		});

@@ -17,6 +17,11 @@ import { getTranslatedData } from "@/docs/js/translationUtils";
 
 import { Dialog, DialogContent, DialogTrigger } from "./nav-dialog";
 
+interface Props {
+	sectionId?: string;
+}
+
+const { sectionId = "main" } = Astro.props;
 const currLocale = getLocaleFromUrl(Astro.url);
 const navData = getTranslatedData("navData", currLocale);
 const siteData = getTranslatedData("siteData", currLocale);
@@ -33,7 +38,7 @@ const siteData = getTranslatedData("siteData", currLocale);
 			class="h-[calc(100vh-var(--nav-height))-1px] rounded-none"
 		>
 			<div class="overflow-x-hidden overflow-y-auto">
-				<SidebarNav>
+				<SidebarNav sectionId={sectionId}>
 					<div slot="after-links" class="flex justify-between">
 						<ThemeToggle />
 						{locales.length > 1 && <MobileLanguageSelect />}

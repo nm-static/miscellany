@@ -31,11 +31,6 @@ const currLocale = getLocaleFromUrl(Astro.url);
 // internal link, so we need to add the locale to the link
 let actualLink = getLocalizedRoute(currLocale, link);
 
-// remove trailing slash so IDs will work
-if (actualLink.endsWith("/") && actualLink !== "/") {
-	actualLink = actualLink.slice(0, -1);
-}
-
 const currentPath = comparePathsWithTrailingSlash(Astro.url.pathname, actualLink);
 ---
 

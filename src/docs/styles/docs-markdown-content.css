@@ -143,14 +143,11 @@
 	}
 
 	/* Table styling */
-	.docs-markdown-content table:not(:where(.not-content, .not-content *)) {
-		@apply block w-full table-auto border-spacing-0 overflow-auto text-sm;
+	.docs-markdown-content table:not(:where(.not-content *)) {
+		@apply mb-4 overflow-auto;
 	}
-	.docs-markdown-content :is(thead, tbody):not(:where(.not-content, .not-content *)) {
-		@apply w-full;
-	}
-	.docs-markdown-content tr:not(:where(.not-content, .not-content *)) {
-		@apply w-full;
+	.docs-markdown-content :where(table):not(:where(.not-content *)) {
+		@apply w-full table-auto border-spacing-0 text-sm;
 	}
 	.docs-markdown-content :is(th, td):not(:where(.not-content, .not-content *)) {
 		@apply border-border table-cell border-b px-4 py-2;
@@ -166,7 +163,7 @@
 		padding-inline-end: 0;
 	}
 	.docs-markdown-content th:not(:where(.not-content, .not-content *)) {
-		@apply text-foreground font-semibold;
+		@apply text-foreground font-medium;
 	}
 	/* Align headings to the start of the line unless set by the `align` attribute. */
 	.docs-markdown-content th:not([align]):not(:where(.not-content, .not-content *)) {

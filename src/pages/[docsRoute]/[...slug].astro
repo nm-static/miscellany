@@ -15,7 +15,9 @@ import CustomH6 from "@/docs/components/markdown-overrides/CustomH6.astro";
 import CustomH6Copy from "@/docs/components/markdown-overrides/CustomH6Copy.astro";
 import ExternalLink from "@/docs/components/markdown-overrides/ExternalLink.astro";
 import { defaultLocale, siteSettings } from "@/docs/config/siteSettings.json";
+import { docsRoute } from "@/docs/js/docsUtils";
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
+import { getLocalizedRoute, getTranslatedData } from "@/docs/js/translationUtils";
 import DocsLayout from "@/docs/layouts/DocsLayout.astro";
 
 export async function getStaticPaths() {
@@ -27,19 +29,53 @@ export async function getStaticPaths() {
 	// get rid of pages from other languages and remove locale from slug
 	const filteredDocs = filterCollectionByLanguage(docs, defaultLocale);
 
-	return filteredDocs.map((doc) => {
-		return {
-			params: { slug: doc.id },
-			props: { doc },
-		};
-	});
+	const sidebarData = getTranslatedData("sidebarNavData", defaultLocale);
+	const documentationTabs = sidebarData.tabs;
+
+	// replace any starting or ending slashes, then remove anything before the first slash remaining if necessary
+	const localizedDocsRoute = getLocalizedRoute(defaultLocale, docsRoute)
+		.replace(/^\/|\/$/g, "")
+		.replace(/^[^/]+\//, "");
+
+	// Create paths for each docs section
+	const paths: any[] = [];
+
+	// If documentation tabs are defined, use them to generate paths for each section
+	if (documentationTabs && documentationTabs.length > 0) {
+		for (const section of documentationTabs) {
+			// Filter docs by section
+			const sectionDocs = filteredDocs.filter((doc) => doc.data.section === section.id);
+
+			// Generate paths for this section
+			const sectionPaths = sectionDocs.map((doc) => {
+				return {
+					params: { docsRoute: localizedDocsRoute, slug: doc.id as string },
+					props: { doc, sectionId: section.id },
+				};
+			});
+
+			paths.push(...sectionPaths);
+		}
+	} else {
+		// Fallback to original behavior if no tabs are configured
+		const defaultPaths = filteredDocs.map((doc) => {
+			return {
+				params: { docsRoute: localizedDocsRoute, slug: doc.id as string },
+				props: { doc, sectionId: "main" },
+			};
+		});
+
+		paths.push(...defaultPaths);
+	}
+
+	return paths;
 }
 
-const { doc } = Astro.props;
+const { doc, sectionId = "main" } = Astro.props;
 const { Content, headings } = await render(doc);
 ---
 
-<DocsLayout doc={doc} headings={headings}>
+<DocsLayout doc={doc} headings={headings} sectionId={sectionId}>
 	{
 		siteSettings.copyLinkButtons === false ? (
 			<Content

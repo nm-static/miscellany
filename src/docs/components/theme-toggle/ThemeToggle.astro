@@ -1,6 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
-
+import MoonStarsIcon from "@tabler/icons/outline/moon-stars.svg";
+import SunIcon from "@tabler/icons/outline/sun.svg";
 type IconSize = "sm" | "md" | "lg";
 
 interface Props {
@@ -29,16 +29,14 @@ const { class: className, animationDuration = 200, size = "md", ...rest } = Astr
 >
 	<!-- placeholder -->
 	<div class:list={["relative", sizeClasses[size]]}>
-		<Icon
-			name="tabler/moon-stars"
+		<MoonStarsIcon
 			class:list={["theme-toggle__dark-icon absolute inset-0", sizeClasses[size]]}
 			data-current-theme="false"
 			style={{
 				"--animation-duration": `${animationDuration}ms`,
 			}}
 		/>
-		<Icon
-			name="tabler/sun"
+		<SunIcon
 			class:list={["theme-toggle__light-icon absolute inset-0", sizeClasses[size]]}
 			data-current-theme="false"
 			style={{

@@ -1,49 +1,70 @@
 import { getCollection } from "astro:content";
 
-import { defaultLocale, locales } from "@/docs/config/siteSettings.json";
-import type { DocSection } from "@/docs/config/types/configDataTypes";
+import { defaultLocale, locales, siteSettings } from "@/docs/config/siteSettings.json";
+import type { DocsSection, DocsSidebarNavData, DocsTab } from "@/docs/config/types/configDataTypes";
 
 import { filterCollectionByLanguage } from "./localeUtils";
 import { getTranslatedData } from "./translationUtils";
 
 type LocaleType = (typeof locales)[number];
 
-// Cache for translated sections to avoid repeated data fetching
-const sectionCache = new Map<LocaleType, DocSection[]>();
+export const docsRoute = (siteSettings.docsRoute || "docs").replace(/^\/|\/$/g, "");
+
+// Cache for translated tab data to avoid repeated data fetching
+const tabCache = new Map<LocaleType, DocsTab[]>();
 
 /**
- * Get translated sections data with caching
+ * Get translated tabs data with caching
  */
-const getTranslatedSections = (locale: LocaleType): DocSection[] => {
-	if (!sectionCache.has(locale)) {
-		sectionCache.set(locale, getTranslatedData("sidebarNavData", locale) as DocSection[]);
+const getTranslatedTabs = (locale: LocaleType): DocsTab[] => {
+	if (!tabCache.has(locale)) {
+		tabCache.set(locale, getTranslatedData("sidebarNavData", locale).tabs);
 	}
-	return sectionCache.get(locale)!;
+	return tabCache.get(locale)!;
 };
 
 /**
- * Get an array of section IDs in the order they should appear in navigation
+ * Get tab by ID
  */
-export const getOrderedSectionIds = (locale: LocaleType): string[] => {
-	return getTranslatedSections(locale).map((section) => section.id);
+export const getTabById = (tabId: string, locale: LocaleType): DocsTab | undefined => {
+	return getTranslatedTabs(locale).find((tab) => tab.id === tabId);
 };
 
 /**
- * Get the section details by ID
+ * Get sections for a specific tab
  */
-export const getSectionById = (id: string, locale: LocaleType): DocSection | undefined => {
-	return getTranslatedSections(locale).find((section) => section.id === id);
+export const getTabSections = (tabId: string, locale: LocaleType): DocsSection[] => {
+	const tab = getTabById(tabId, locale);
+	return tab?.sections || [];
+};
+
+/**
+ * Get an array of section IDs in the order they should appear in navigation for a specific tab
+ */
+export const getOrderedSectionIds = (tabId: string, locale: LocaleType): string[] => {
+	return getTabSections(tabId, locale).map((section) => section.id);
+};
+
+/**
+ * Get the section details by ID within a specific tab
+ */
+export const getSectionById = (
+	sectionId: string,
+	tabId: string,
+	locale: LocaleType,
+): DocsSection | undefined => {
+	return getTabSections(tabId, locale).find((section) => section.id === sectionId);
 };
 
 /**
  * Get the title for a documentation section
  */
-export const getSectionTitle = (id: string, locale: LocaleType): string => {
-	const section = getSectionById(id, locale);
+export const getSectionTitle = (sectionId: string, tabId: string, locale: LocaleType): string => {
+	const section = getSectionById(sectionId, tabId, locale);
 	if (section?.title) return section.title;
 
 	// Fallback to title case if section not found
-	return id
+	return sectionId
 		.split("-")
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ");
@@ -52,17 +73,25 @@ export const getSectionTitle = (id: string, locale: LocaleType): string => {
 /**
  * Get the previous and next pages for a given doc id
  */
-export const getAdjacentPages = async (currentId: string, locale: LocaleType) => {
+export const getAdjacentPages = async (currentId: string, locale: LocaleType, tabId: string) => {
 	// Get all non-draft docs
 	const allDocs = await getCollection("docs", ({ data }) => {
 		return data.draft !== true;
 	});
 
 	// Filter docs by locale
-	const filteredDocs = filterCollectionByLanguage(allDocs, locale);
+	let filteredDocs = filterCollectionByLanguage(allDocs, locale);
 
-	// Get ordered section IDs and create a Map for faster lookups
-	const orderedSectionIds = getOrderedSectionIds(locale);
+	// Filter by tab if tabId is provided
+	if (tabId) {
+		filteredDocs = filteredDocs.filter((doc) => doc.data.section === tabId);
+	}
+
+	// Get tab details
+	const tab = getTabById(tabId, locale);
+
+	// Get ordered section IDs for this tab and create a Map for faster lookups
+	const orderedSectionIds = tab ? getOrderedSectionIds(tabId, locale) : [];
 	const sectionIndexMap = new Map(orderedSectionIds.map((id, index) => [id, index]));
 
 	// Sort docs by section order and then by sidebar order

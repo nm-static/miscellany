@@ -9,7 +9,8 @@
  */
 import "@pagefind/default-ui/css/ui.css";
 
-import { Icon } from "astro-icon/components";
+import CommandIcon from "@tabler/icons/outline/command.svg";
+import SearchIcon from "@tabler/icons/outline/search.svg";
 
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./search-dialog";
 
@@ -25,20 +26,16 @@ const { class: classList, ...rest } = Astro.props as Props;
 	<DialogTrigger
 		class="docs-nav__link--base docs-primary-focus flex h-8 items-center justify-center rounded-md"
 	>
-		<Icon name="tabler/search" class="size-5 md:hidden" aria-label="search bar" />
+		<SearchIcon class="size-5 md:hidden" aria-label="search bar" />
 		<div
 			class="bg-muted text-muted-foreground hover:text-foreground mx-1 hidden h-8 gap-2 rounded-full border px-3 text-xs transition-colors md:flex"
 		>
 			<div class="flex items-center gap-2">
-				<Icon name="tabler/search" class="size-3.5" aria-label="search bar" />
+				<SearchIcon class="size-3.5" aria-label="search bar" />
 				<span class="inline pb-px">Search </span>
 			</div>
 			<kbd class="flex items-center gap-0.5">
-				<Icon
-					name="tabler/command"
-					class="-mr-0.5 mb-0.5 size-3.5 max-h-full"
-					aria-label="command key"
-				/>
+				<CommandIcon class="-mr-0.5 mb-0.5 size-3.5 max-h-full" aria-label="command key" />
 				K
 			</kbd>
 		</div>

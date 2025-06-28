@@ -30,6 +30,9 @@ export const siteSettings: DocsSiteSettingsProps = {
 	copyLinkButtons: true,
 	// set to "false" to disable pagination on docs pages
 	pagination: true,
+	// the base route for docs pages (default language). Defaults to "docs"
+	// to change the base route for other languages use the `localizedCollections` and `routeTranslations` objects in `translationData.json`
+	docsRoute: "docs",
 };
 
 export default siteSettings;

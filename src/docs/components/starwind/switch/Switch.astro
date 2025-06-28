@@ -1,9 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
 
-/**
- * Props for the Switch component.
- */
 type Props = Omit<HTMLAttributes<"button">, "role" | "type" | "aria-checked"> & {
 	/**
 	 * Unique identifier for the switch component.
@@ -27,8 +25,9 @@ type Props = Omit<HTMLAttributes<"button">, "role" | "type" | "aria-checked"> & 
 	size?: "sm" | "md" | "lg";
 	/**
 	 * Visual style variant of the switch.
+	 * @default "default"
 	 */
-	variant?: "primary" | "secondary" | "default";
+	variant?: "default" | "primary" | "secondary" | "info" | "success" | "warning" | "error";
 };
 
 const {
@@ -45,16 +44,10 @@ const {
 // if no specific padding is set, base it off of size
 let newPadding = padding;
 if (!padding) {
-	newPadding = size === "sm" ? 2 : size === "lg" ? 4 : 3;
+	newPadding = size === "sm" ? 2.5 : size === "lg" ? 4 : 3;
 }
 
 const sizeMultiplier = size === "sm" ? 4 : size === "lg" ? 6 : 5;
-
-const toggleSizeClass = {
-	sm: "size-4",
-	md: "size-5",
-	lg: "size-6",
-};
 
 let ariaLabel;
 if (rest["aria-label"]) {
@@ -65,6 +58,41 @@ if (rest["aria-label"]) {
 } else {
 	ariaLabel = "switch";
 }
+
+const switchButton = tv({
+	base: [
+		"starwind-transition-colors border-input bg-muted inline-flex h-(--height) w-(--width) items-center rounded-full border",
+		"group peer ring-offset-background focus-visible:outline-2 focus-visible:outline-offset-2",
+		"not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+	],
+	variants: {
+		variant: {
+			primary: "aria-checked:border-primary focus:outline-primary",
+			secondary: "aria-checked:border-secondary focus:outline-secondary",
+			default: "aria-checked:border-foreground focus:outline-outline",
+			info: "aria-checked:border-info focus:outline-info",
+			success: "aria-checked:border-success focus:outline-success",
+			warning: "aria-checked:border-warning focus:outline-warning",
+			error: "aria-checked:border-error focus:outline-error",
+		},
+	},
+	defaultVariants: { variant: "default" },
+});
+
+const switchToggle = tv({
+	base: [
+		"bg-foreground inline-block transform rounded-full transition-transform",
+		"group-aria-checked:translate-x-(--translation) group-aria-[checked=false]:translate-x-[calc(var(--padding)-var(--border-offset))]",
+	],
+	variants: { size: { sm: "size-4", md: "size-5", lg: "size-6" } },
+	defaultVariants: { size: "md" },
+});
+
+const switchLabel = tv({
+	base: "text-foreground ml-2 font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+	variants: { size: { sm: "text-sm", md: "text-base", lg: "text-lg" } },
+	defaultVariants: { size: "md" },
+});
 ---
 
 <div class="starwind-switch flex items-center">
@@ -74,48 +102,24 @@ if (rest["aria-label"]) {
 		role="switch"
 		aria-checked={checked ? "true" : "false"}
 		aria-label={ariaLabel}
-		class:list={[
-			"inline-flex h-(--height) w-(--width) items-center rounded-full transition-colors",
-			"group peer ring-offset-background focus-visible:outline-2 focus-visible:outline-offset-2",
-			"aria-[checked=false]:bg-input",
-			"not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
-			{
-				"aria-checked:bg-primary focus:outline-primary": variant === "primary",
-				"aria-checked:bg-secondary focus:outline-secondary": variant === "secondary",
-				"aria-checked:bg-foreground focus:outline-outline": variant === "default",
-			},
-			className,
-		]}
+		class={switchButton({ variant, class: className })}
 		style={{
 			"--padding": `${newPadding}px`,
 			"--height": `calc((var(--spacing) * ${sizeMultiplier}) + (var(--padding) * 2))`,
 			"--width": `calc((var(--spacing) * ${sizeMultiplier} * 2) + (var(--padding) * 3))`,
+			"--border-offset": "1px",
 		}}
 		{...rest}
 	>
 		<span
-			class:list={[
-				"bg-background inline-block transform rounded-full transition-transform",
-				"group-aria-checked:translate-x-(--translation) group-aria-[checked=false]:translate-x-(--padding)",
-				toggleSizeClass[size],
-			]}
+			class={switchToggle({ size })}
 			style={{
-				"--translation": `calc((var(--spacing) * ${sizeMultiplier}) + (var(--padding) * 2))`,
+				"--translation": `calc((var(--spacing) * ${sizeMultiplier}) + (var(--padding) * 2) - var(--border-offset))`,
 			}}></span>
 	</button>
 	{
 		label && (
-			<label
-				for={id}
-				class:list={[
-					"text-foreground ml-2 font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-					{
-						"text-sm": size === "sm",
-						"text-base": size === "md",
-						"text-lg": size === "lg",
-					},
-				]}
-			>
+			<label for={id} class={switchLabel({ size })}>
 				{label}
 			</label>
 		)
@@ -125,10 +129,6 @@ if (rest["aria-label"]) {
 <script>
 	import type { SwitchChangeEvent } from "./SwitchTypes";
 
-	/**
-	 * Handles the functionality of a switch component
-	 * Manages state changes and keyboard interactions
-	 */
 	class SwitchHandler {
 		private switchButton: HTMLButtonElement;
 
@@ -137,17 +137,11 @@ if (rest["aria-label"]) {
 			this.setupEventListeners();
 		}
 
-		/**
-		 * Sets up click and keyboard event listeners for the switch
-		 */
 		private setupEventListeners(): void {
 			this.switchButton.addEventListener("click", () => this.handleStateChange());
 			this.switchButton.addEventListener("keydown", (event) => this.handleKeyDown(event));
 		}
 
-		/**
-		 * Handles the state change of the switch
-		 */
 		private handleStateChange(): void {
 			if (this.switchButton.disabled) return;
 
@@ -158,10 +152,7 @@ if (rest["aria-label"]) {
 
 			// Dispatch custom event with the new state
 			const event = new CustomEvent<SwitchChangeEvent["detail"]>("starwind-switch:change", {
-				detail: {
-					checked: newState,
-					switchId: this.switchButton.id,
-				},
+				detail: { checked: newState, switchId: this.switchButton.id },
 				bubbles: true,
 				cancelable: true,
 			});
@@ -169,10 +160,6 @@ if (rest["aria-label"]) {
 			this.switchButton.dispatchEvent(event);
 		}
 
-		/**
-		 * Handles keyboard events for the switch
-		 * @param event - The keyboard event
-		 */
 		private handleKeyDown(event: KeyboardEvent): void {
 			if (this.switchButton.disabled) return;
 
