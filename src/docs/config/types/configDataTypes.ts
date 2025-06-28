@@ -39,23 +39,25 @@ export interface DocsSiteSettingsProps {
 	copyLinkButtons?: boolean;
 	pagination?: boolean;
 	docsRoute?: string;
-	docsSections?: DocsSectionConfig[];
 }
 
 // --------------------------------------------------------
 // documentation section types
-export type DocSection = {
+interface DocsSections {
 	/**
 	 * Unique identifier for the section. This should match the folder name under src/data/docs/
 	 */
 	id: string;
+	/**
+	 * Display title for the section
+	 */
 	title: string;
-};
+}
 
 /**
  * Configuration for a documentation section
  */
-export interface DocsSectionConfig {
+interface DocsTabs {
 	/**
 	 * Unique identifier for the section
 	 */
@@ -72,6 +74,11 @@ export interface DocsSectionConfig {
 	 * Icon for the section (optional)
 	 */
 	icon?: string;
+}
+
+export interface DocsSidebarNavData {
+	sections: DocsSections[];
+	tabs: DocsTabs[];
 }
 
 // --------------------------------------------------------

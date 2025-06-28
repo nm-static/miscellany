@@ -19,6 +19,11 @@ interface Props {
 
 const { sectionId = "main" } = Astro.props;
 const currLocale = getLocaleFromUrl(Astro.url);
+const sidebarData = getTranslatedData("sidebarNavData", currLocale);
+
+// Get localized documentation tabs based on current locale
+const sidebarTabs = sidebarData.tabs;
+const sidebarSections = sidebarData.sections;
 
 // Get all non-draft docs
 const allDocs = await getCollection("docs", ({ data }) => {
@@ -32,17 +37,21 @@ const firstPagesMap = new Map();
 const filteredDocs = filterCollectionByLanguage(allDocs, currLocale);
 
 // Get the current section configuration
-const currentSection = siteSettings.docsSections?.find((s) => s.id === sectionId) || {
+const currentSection = sidebarSections?.find((s) => s.id === sectionId) || {
 	id: "main",
-	route: docsRoute,
 	title: "Documentation",
 };
 
+// Filter docs by their section property if documentation tabs are configured
+const sectionFilteredDocs = sidebarSections
+	? filteredDocs.filter((doc) => doc.data.section === sectionId)
+	: filteredDocs;
+
 // Find the first page for each section
-if (siteSettings.docsSections) {
-	for (const section of siteSettings.docsSections) {
+if (sidebarSections) {
+	for (const section of sidebarSections) {
 		// Get docs for this section
-		const sectionDocs = filteredDocs.filter((doc) => doc.data.section === section.id);
+		const sectionDocs = sectionFilteredDocs.filter((doc) => doc.data.section === section.id);
 
 		// Sort by sidebar order if available
 		const sortedDocs = [...sectionDocs].sort((a, b) => {
@@ -68,11 +77,6 @@ if (siteSettings.docsSections) {
 		}
 	}
 }
-
-// Filter docs by their section property if docsSections is configured
-const sectionFilteredDocs = siteSettings.docsSections
-	? filteredDocs.filter((doc) => doc.data.section === sectionId)
-	: filteredDocs;
 
 // Group docs by their top-level directory
 const docsBySection = sectionFilteredDocs.reduce(
@@ -145,16 +149,16 @@ for (const section of sections) {
 <nav class="space-y-8">
 	<slot name="before-links" />
 
-	{/* Section Selector */}
+	{/* Documentation Tabs Selector */}
 	{
-		siteSettings.docsSections && siteSettings.docsSections.length > 0 && (
+		sidebarTabs && sidebarTabs.length > 0 && (
 			<div class="mb-6">
 				{/* <div class="mb-3">
 					<h2 class="text-lg font-semibold md:text-base">Documentation Sections</h2>
 				</div> */}
 				<div class="bg-muted/30 mr-4 rounded-md border p-2">
 					<ul class="space-y-1" role="tablist">
-						{siteSettings.docsSections.map((section) => {
+						{sidebarTabs.map((section) => {
 							// Get the current URL path and determine if this section is active
 							const isActive = section.id === sectionId;
 

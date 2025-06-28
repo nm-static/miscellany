@@ -18,6 +18,7 @@ import { defaultLocale, siteSettings } from "@/docs/config/siteSettings.json";
 import { docsRoute } from "@/docs/js/docsUtils";
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
 import DocsLayout from "@/docs/layouts/DocsLayout.astro";
+import { getTranslatedData } from "@/docs/js/translationUtils";
 
 export async function getStaticPaths() {
 	const docs = await getCollection("docs", ({ data }) => {
@@ -26,21 +27,50 @@ export async function getStaticPaths() {
 	});
 
 	// get rid of pages from other languages and remove locale from slug
-	const filteredDocs = filterCollectionByLanguage(docs, defaultLocale);
+	const filteredDocs = filterCollectionByLanguage(docs, "fr");
 
-	return filteredDocs.map((doc) => {
-		return {
-			params: { docsRoute: docsRoute, slug: doc.id },
-			props: { doc },
-		};
-	});
+	const sidebarData = getTranslatedData("sidebarNavData", "fr");
+	const documentationTabs = sidebarData.tabs;
+
+	// Create paths for each docs section
+	const paths: any[] = [];
+
+	// If documentation tabs are defined, use them to generate paths for each section
+	if (documentationTabs && documentationTabs.length > 0) {
+		for (const section of documentationTabs) {
+			// Filter docs by section
+			const sectionDocs = filteredDocs.filter((doc) => doc.data.section === section.id);
+
+			// Generate paths for this section
+			const sectionPaths = sectionDocs.map((doc) => {
+				return {
+					params: { docsRoute, slug: doc.id as string },
+					props: { doc, sectionId: section.id },
+				};
+			});
+
+			paths.push(...sectionPaths);
+		}
+	} else {
+		// Fallback to original behavior if no tabs are configured
+		const defaultPaths = filteredDocs.map((doc) => {
+			return {
+				params: { docsRoute: docsRoute, slug: doc.id as string },
+				props: { doc, sectionId: "main" },
+			};
+		});
+
+		paths.push(...defaultPaths);
+	}
+
+	return paths;
 }
 
-const { doc } = Astro.props;
+const { doc, sectionId = "main" } = Astro.props;
 const { Content, headings } = await render(doc);
 ---
 
-<DocsLayout doc={doc} headings={headings}>
+<DocsLayout doc={doc} headings={headings} sectionId={sectionId}>
 	{
 		siteSettings.copyLinkButtons === false ? (
 			<Content

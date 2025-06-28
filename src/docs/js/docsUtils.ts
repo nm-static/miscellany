@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
 
 import { defaultLocale, locales, siteSettings } from "@/docs/config/siteSettings.json";
-import type { DocSection } from "@/docs/config/types/configDataTypes";
+import type { DocsSidebarNavData } from "@/docs/config/types/configDataTypes";
 
 import { filterCollectionByLanguage } from "./localeUtils";
 import { getTranslatedData } from "./translationUtils";
@@ -11,14 +11,14 @@ type LocaleType = (typeof locales)[number];
 export const docsRoute = (siteSettings.docsRoute || "docs").replace(/^\/|\/$/g, "");
 
 // Cache for translated sections to avoid repeated data fetching
-const sectionCache = new Map<LocaleType, DocSection[]>();
+const sectionCache = new Map<LocaleType, DocsSidebarNavData["sections"]>();
 
 /**
  * Get translated sections data with caching
  */
-const getTranslatedSections = (locale: LocaleType): DocSection[] => {
+const getTranslatedSections = (locale: LocaleType): DocsSidebarNavData["sections"] => {
 	if (!sectionCache.has(locale)) {
-		sectionCache.set(locale, getTranslatedData("sidebarNavData", locale) as DocSection[]);
+		sectionCache.set(locale, getTranslatedData("sidebarNavData", locale).sections);
 	}
 	return sectionCache.get(locale)!;
 };
@@ -33,7 +33,10 @@ export const getOrderedSectionIds = (locale: LocaleType): string[] => {
 /**
  * Get the section details by ID
  */
-export const getSectionById = (id: string, locale: LocaleType): DocSection | undefined => {
+export const getSectionById = (
+	id: string,
+	locale: LocaleType,
+): DocsSidebarNavData["sections"][number] | undefined => {
 	return getTranslatedSections(locale).find((section) => section.id === id);
 };
 
@@ -54,7 +57,11 @@ export const getSectionTitle = (id: string, locale: LocaleType): string => {
 /**
  * Get the previous and next pages for a given doc id
  */
-export const getAdjacentPages = async (currentId: string, locale: LocaleType, sectionId?: string) => {
+export const getAdjacentPages = async (
+	currentId: string,
+	locale: LocaleType,
+	sectionId?: string,
+) => {
 	// Get all non-draft docs
 	const allDocs = await getCollection("docs", ({ data }) => {
 		return data.draft !== true;
@@ -65,7 +72,7 @@ export const getAdjacentPages = async (currentId: string, locale: LocaleType, se
 
 	// Filter by section if sectionId is provided
 	if (sectionId) {
-		filteredDocs = filteredDocs.filter(doc => doc.data.section === sectionId);
+		filteredDocs = filteredDocs.filter((doc) => doc.data.section === sectionId);
 	}
 
 	// Get ordered section IDs and create a Map for faster lookups
