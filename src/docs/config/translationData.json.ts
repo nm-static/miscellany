@@ -76,11 +76,15 @@ export const textTranslations = {
 export const routeTranslations = {
 	en: {
 		overviewKey: "overview",
-		docsKey: "docs",
+		docsKey1: "docs",
+		docsKey2: "docs/*",
+		docsKey3: "docs",
 	},
 	fr: {
 		overviewKey: "apercu",
-		docsKey: "docs",
+		docsKey1: "docs",
+		docsKey2: "docs",
+		docsKey3: "docs/*",
 	},
 } as const;
 

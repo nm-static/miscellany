@@ -17,7 +17,7 @@ import ExternalLink from "@/docs/components/markdown-overrides/ExternalLink.astr
 import { defaultLocale, siteSettings } from "@/docs/config/siteSettings.json";
 import { docsRoute } from "@/docs/js/docsUtils";
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
-import { getTranslatedData } from "@/docs/js/translationUtils";
+import { getLocalizedRoute, getTranslatedData } from "@/docs/js/translationUtils";
 import DocsLayout from "@/docs/layouts/DocsLayout.astro";
 
 export async function getStaticPaths() {
@@ -32,6 +32,11 @@ export async function getStaticPaths() {
 	const sidebarData = getTranslatedData("sidebarNavData", "fr");
 	const documentationTabs = sidebarData.tabs;
 
+	// replace any starting or ending slashes, then remove anything before the first slash remaining if necessary
+	const localizedDocsRoute = getLocalizedRoute("fr", docsRoute)
+		.replace(/^\/|\/$/g, "")
+		.replace(/^[^/]+\//, "");
+
 	// Create paths for each docs section
 	const paths: any[] = [];
 
@@ -44,7 +49,7 @@ export async function getStaticPaths() {
 			// Generate paths for this section
 			const sectionPaths = sectionDocs.map((doc) => {
 				return {
-					params: { docsRoute, slug: doc.id as string },
+					params: { docsRoute: localizedDocsRoute, slug: doc.id as string },
 					props: { doc, sectionId: section.id },
 				};
 			});
@@ -55,7 +60,7 @@ export async function getStaticPaths() {
 		// Fallback to original behavior if no tabs are configured
 		const defaultPaths = filteredDocs.map((doc) => {
 			return {
-				params: { docsRoute: docsRoute, slug: doc.id as string },
+				params: { docsRoute: localizedDocsRoute, slug: doc.id as string },
 				props: { doc, sectionId: "main" },
 			};
 		});
