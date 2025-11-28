@@ -12,15 +12,15 @@ import { getLocalizedRoute } from "@/docs/js/translationUtils";
  * @returns boolean indicating if the paths are equal
  */
 const comparePathsWithTrailingSlash = (path1: string, path2: string): boolean => {
-	const ensureTrailingSlash = (path: string): string => (path.endsWith("/") ? path : `${path}/`);
+  const ensureTrailingSlash = (path: string): string => (path.endsWith("/") ? path : `${path}/`);
 
-	return ensureTrailingSlash(path1) === ensureTrailingSlash(path2);
+  return ensureTrailingSlash(path1) === ensureTrailingSlash(path2);
 };
 
 interface Props {
-	link: string;
-	text: string;
-	badge?: ComponentProps<typeof Badge>;
+  link: string;
+  text: string;
+  badge?: ComponentProps<typeof Badge>;
 }
 
 const { link, text, badge } = Astro.props;
@@ -35,19 +35,19 @@ const currentPath = comparePathsWithTrailingSlash(Astro.url.pathname, actualLink
 ---
 
 <li>
-	<a
-		href={actualLink}
-		class:list={[
-			"docs-nav__link--sidebar docs-primary-focus block text-base md:text-sm",
-			{
-				// styling for current active page link
-				"text-foreground font-medium": currentPath,
-			},
-		]}
-	>
-		<div class="flex items-center gap-2">
-			<span>{text}</span>
-			{badge && <Badge text={badge.text} variant={badge.variant} />}
-		</div>
-	</a>
+  <a
+    href={actualLink}
+    class:list={[
+      "docs-nav__link--sidebar docs-primary-focus block text-base md:text-sm",
+      {
+        // styling for current active page link
+        "text-foreground font-medium": currentPath,
+      },
+    ]}
+  >
+    <div class="flex items-center gap-2">
+      <span>{text}</span>
+      {badge && <Badge text={badge.text} variant={badge.variant} />}
+    </div>
+  </a>
 </li>

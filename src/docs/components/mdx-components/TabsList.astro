@@ -7,13 +7,13 @@ const { class: className, ...rest } = Astro.props;
 ---
 
 <div
-	class:list={[
-		"not-content text-muted-foreground relative flex w-full",
-		"before:border-border before:absolute before:inset-x-0 before:bottom-0 before:border-b-2",
-		className,
-	]}
-	role="tablist"
-	{...rest}
+  class:list={[
+    "not-content text-muted-foreground relative flex w-full",
+    "before:border-border before:absolute before:inset-x-0 before:bottom-0 before:border-b-2",
+    className,
+  ]}
+  role="tablist"
+  {...rest}
 >
-	<slot />
+  <slot />
 </div>

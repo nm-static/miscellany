@@ -13,9 +13,9 @@ const domain = Astro.url.origin + (await getLocalizedPathname(currLocale, Astro.
 ---
 
 <h3
-	id={id}
-	{...rest}
-	class="group flex scroll-mt-[calc(var(--nav-height)+3rem)] flex-wrap items-baseline gap-2 lg:scroll-mt-[calc(var(--nav-height)+1rem)]"
+  id={id}
+  {...rest}
+  class="group flex scroll-mt-[calc(var(--nav-height)+3rem)] flex-wrap items-baseline gap-2 lg:scroll-mt-[calc(var(--nav-height)+1rem)]"
 >
-	<slot />
+  <slot />
 </h3>
