@@ -8,10 +8,10 @@ import CardTitle from "./CardTitle.astro";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
 
 export default {
-	Root: Card,
-	Header: CardHeader,
-	Footer: CardFooter,
-	Title: CardTitle,
-	Description: CardDescription,
-	Content: CardContent,
+  Root: Card,
+  Header: CardHeader,
+  Footer: CardFooter,
+  Title: CardTitle,
+  Description: CardDescription,
+  Content: CardContent,
 };

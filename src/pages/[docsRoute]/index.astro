@@ -10,16 +10,16 @@ import { getLocalizedRoute, getTranslatedData } from "@/docs/js/translationUtils
 import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
 
 export async function getStaticPaths() {
-	// replace any starting or ending slashes, then remove anything before the first slash remaining if necessary
-	const localizedDocsRoute = getLocalizedRoute(defaultLocale, docsRoute)
-		.replace(/^\/|\/$/g, "")
-		.replace(/^[^/]+\//, "");
+  // replace any starting or ending slashes, then remove anything before the first slash remaining if necessary
+  const localizedDocsRoute = getLocalizedRoute(defaultLocale, docsRoute)
+    .replace(/^\/|\/$/g, "")
+    .replace(/^[^/]+\//, "");
 
-	return [
-		{
-			params: { docsRoute: localizedDocsRoute },
-		},
-	];
+  return [
+    {
+      params: { docsRoute: localizedDocsRoute },
+    },
+  ];
 }
 
 const currLocale = getLocaleFromUrl(Astro.url);
@@ -27,15 +27,15 @@ const siteData = getTranslatedData("siteData", currLocale);
 ---
 
 <BaseLayoutDocs title={siteData.title} description={siteData.description}>
-	<main class="overflow-hidden">
-		<Hero />
-		<FeatureGrid />
-		<Testimonials />
-		<CtaGlow
-			title="Ready to build your documentation?"
-			description="Get started with Pathfinder today and create beautiful, maintainable documentation that your users will love."
-			primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
-			githubLink="https://github.com/Boston343"
-		/>
-	</main>
+  <main class="overflow-hidden">
+    <Hero />
+    <FeatureGrid />
+    <Testimonials />
+    <CtaGlow
+      title="Ready to build your documentation?"
+      description="Get started with Pathfinder today and create beautiful, maintainable documentation that your users will love."
+      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
+      githubLink="https://github.com/Boston343"
+    />
+  </main>
 </BaseLayoutDocs>

@@ -5,14 +5,14 @@ import { localeMap, locales } from "@/docs/config/siteSettings.json";
  * @param text: string - text to slugify
  */
 export function slugify(text: string): string {
-	return text
-		.toString()
-		.toLowerCase() // convert to lowercase
-		.replace(/\s+/g, "-") // replace spaces with -
-		.replace(/[^\w-]+/g, "") // remove all non-word chars
-		.replace(/--+/g, "-") // replace multiple dashes with single dash
-		.replace(/^-+/, "") // trim dash from start of text
-		.replace(/-+$/, ""); // trim dash from end of text
+  return text
+    .toString()
+    .toLowerCase() // convert to lowercase
+    .replace(/\s+/g, "-") // replace spaces with -
+    .replace(/[^\w-]+/g, "") // remove all non-word chars
+    .replace(/--+/g, "-") // replace multiple dashes with single dash
+    .replace(/^-+/, "") // trim dash from start of text
+    .replace(/-+$/, ""); // trim dash from end of text
 }
 
 /**
@@ -20,17 +20,17 @@ export function slugify(text: string): string {
  * @param text: string - text to humanize
  */
 export function humanize(text: string): string {
-	const slugifiedText = slugify(text);
-	return (
-		slugifiedText
-			.replace(/-/g, " ") // replace "-" with space
-			// .toLowerCase();
-			.replace(
-				// upper case first letter of every word, and lower case the rest
-				/\w\S*/g,
-				(w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
-			)
-	);
+  const slugifiedText = slugify(text);
+  return (
+    slugifiedText
+      .replace(/-/g, " ") // replace "-" with space
+      // .toLowerCase();
+      .replace(
+        // upper case first letter of every word, and lower case the rest
+        /\w\S*/g,
+        (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+      )
+  );
 }
 
 // --------------------------------------------------------
@@ -40,10 +40,10 @@ export function humanize(text: string): string {
  * @returns string - categorified text
  */
 export function categorify(text: string): string {
-	const slugifiedText = slugify(text);
-	return slugifiedText
-		.replace(/-/g, " ") // replace "-" with space
-		.toUpperCase();
+  const slugifiedText = slugify(text);
+  return slugifiedText
+    .replace(/-/g, " ") // replace "-" with space
+    .toUpperCase();
 }
 
 // --------------------------------------------------------
@@ -54,16 +54,16 @@ export function categorify(text: string): string {
  * @returns string - formatted date
  */
 export function formatDate(date: string | number | Date, locale: (typeof locales)[number]): string {
-	let localeString = "en-US";
+  let localeString = "en-US";
 
-	if (locales.includes(locale)) {
-		localeString = localeMap[locale];
-	}
+  if (locales.includes(locale)) {
+    localeString = localeMap[locale];
+  }
 
-	return new Date(date).toLocaleDateString(localeString, {
-		timeZone: "UTC",
-		year: "numeric",
-		month: "short",
-		day: "numeric",
-	});
+  return new Date(date).toLocaleDateString(localeString, {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }

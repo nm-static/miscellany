@@ -17,18 +17,18 @@ import siteDataFr from "./fr/siteData.json";
 import testimonialDataFr from "./fr/testimonialData.json";
 
 export const dataTranslations = {
-	en: {
-		siteData: siteDataEn,
-		navData: navDataEn,
-		sidebarNavData: sidebarNavDataEn,
-		testimonialData: testimonialDataEn,
-	},
-	fr: {
-		siteData: siteDataFr,
-		navData: navDataFr,
-		sidebarNavData: sidebarNavDataFr,
-		testimonialData: testimonialDataFr,
-	},
+  en: {
+    siteData: siteDataEn,
+    navData: navDataEn,
+    sidebarNavData: sidebarNavDataEn,
+    testimonialData: testimonialDataEn,
+  },
+  fr: {
+    siteData: siteDataFr,
+    navData: navDataFr,
+    sidebarNavData: sidebarNavDataFr,
+    testimonialData: testimonialDataFr,
+  },
 } as const;
 
 /**
@@ -51,15 +51,15 @@ export const dataTranslations = {
  * ```
  */
 export const textTranslations = {
-	en: {
-		hero_description: `A modern, fast, and feature-rich documentation theme built with Astro v5 and Tailwind CSS v4. This theme is the documentation for itself, explore and learn!`,
-		back_to_all_posts: "Back to all posts",
-	},
-	fr: {
-		hero_description:
-			"Je ne parle pas vraiment français donc j'utilise Google Translate pour quelques parties de cette démo.",
-		back_to_all_posts: "Retour à tous les articles",
-	},
+  en: {
+    hero_description: `A modern, fast, and feature-rich documentation theme built with Astro v5 and Tailwind CSS v4. This theme is the documentation for itself, explore and learn!`,
+    back_to_all_posts: "Back to all posts",
+  },
+  fr: {
+    hero_description:
+      "Je ne parle pas vraiment français donc j'utilise Google Translate pour quelques parties de cette démo.",
+    back_to_all_posts: "Retour à tous les articles",
+  },
 } as const;
 
 /**
@@ -74,18 +74,18 @@ export const textTranslations = {
  * Note: This works in conjunction with the localizedCollections object below
  */
 export const routeTranslations = {
-	en: {
-		overviewKey: "overview",
-		docsKey1: "docs",
-		docsKey2: "docs/*",
-		docsKey3: "docs",
-	},
-	fr: {
-		overviewKey: "apercu",
-		docsKey1: "docs",
-		docsKey2: "docs",
-		docsKey3: "docs/*",
-	},
+  en: {
+    overviewKey: "overview",
+    docsKey1: "docs",
+    docsKey2: "docs/*",
+    docsKey3: "docs",
+  },
+  fr: {
+    overviewKey: "apercu",
+    docsKey1: "docs",
+    docsKey2: "docs",
+    docsKey3: "docs/*",
+  },
 } as const;
 
 /**
@@ -99,9 +99,9 @@ export const routeTranslations = {
  * You can use the locale value to map the collection to a different route if desired
  */
 export const localizedCollections = {
-	docs: {
-		en: "docs",
-		fr: "docs",
-	},
-	// Add more collections/locales as needed
+  docs: {
+    en: "docs",
+    fr: "docs",
+  },
+  // Add more collections/locales as needed
 } as const;

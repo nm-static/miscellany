@@ -15,11 +15,11 @@ import BaseHead from "./BaseHead.astro";
 // image and authorData are defined on blog posts
 // authorData could also be defined on the about author page
 interface Props {
-	title: string;
-	description: string;
-	image?: ImageMetadata;
-	noindex?: boolean; // you need to opt-in to no indexing, as it hides the page from search engines
-	sectionId?: string;
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  noindex?: boolean; // you need to opt-in to no indexing, as it hides the page from search engines
+  sectionId?: string;
 }
 
 const { title, description, image, noindex = false, sectionId = "main" } = Astro.props as Props;
@@ -29,26 +29,26 @@ const currLocale = getLocaleFromUrl(Astro.url);
 
 <!doctype html>
 <html id="documentation-layout" lang={currLocale} class="dark" transition:animate="fade">
-	<head>
-		<BaseHead
-			title={title}
-			description={description}
-			image={image ? image : undefined}
-			noindex={noindex}
-		/>
-	</head>
-	<body id="body" class="">
-		<!-- put cookie consent first so it is seen first by screen readers -->
-		<!-- <CookieConsent /> -->
-		<SkipLink href="#main-content" />
-		<div class="min-h-[100lvh]">
-			<AnnouncementBanner />
-			{/* Navbar */}
-			<header class="bg-background/80 sticky -top-px z-50 w-full border-b backdrop-blur">
-				<Nav sectionId={sectionId} />
-			</header>
-			<slot />
-		</div>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image ? image : undefined}
+      noindex={noindex}
+    />
+  </head>
+  <body id="body" class="">
+    <!-- put cookie consent first so it is seen first by screen readers -->
+    <!-- <CookieConsent /> -->
+    <SkipLink href="#main-content" />
+    <div class="min-h-[100lvh]">
+      <AnnouncementBanner />
+      {/* Navbar */}
+      <header class="bg-background/80 sticky -top-px z-50 w-full border-b backdrop-blur">
+        <Nav sectionId={sectionId} />
+      </header>
+      <slot />
+    </div>
+    <Footer />
+  </body>
 </html>

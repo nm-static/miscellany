@@ -14,15 +14,15 @@ const siteData = getTranslatedData("siteData", currLocale);
 ---
 
 <BaseLayoutDocs title={siteData.title} description={siteData.description}>
-	<main class="overflow-hidden">
-		<Hero />
-		<FeatureGrid />
-		<Testimonials />
-		<CtaGlow
-			title="Ready to build your documentation?"
-			description="Get started with Pathfinder today and create beautiful, maintainable documentation that your users will love."
-			primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
-			githubLink="https://github.com/Boston343"
-		/>
-	</main>
+  <main class="overflow-hidden">
+    <Hero />
+    <FeatureGrid />
+    <Testimonials />
+    <CtaGlow
+      title="Ready to build your documentation?"
+      description="Get started with Pathfinder today and create beautiful, maintainable documentation that your users will love."
+      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
+      githubLink="https://github.com/Boston343"
+    />
+  </main>
 </BaseLayoutDocs>

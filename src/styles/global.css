@@ -20,8 +20,8 @@
  */
 
 @layer utilities {
-	/* used with select field */
-	.sr-only {
-		@apply sr-only;
-	}
+  /* used with select field */
+  .sr-only {
+    @apply sr-only;
+  }
 }

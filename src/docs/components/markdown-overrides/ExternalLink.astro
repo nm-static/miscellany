@@ -16,16 +16,16 @@ let attr: { target?: string; rel?: string } = {};
 
 let actualLink: string;
 if (!href.includes(domain) && !href.startsWith("/") && !href.startsWith("#")) {
-	attr["target"] = "_blank";
-	attr["rel"] = "noopener noreferrer";
-	actualLink = href;
+  attr["target"] = "_blank";
+  attr["rel"] = "noopener noreferrer";
+  actualLink = href;
 } else {
-	// internal link, so we need to add the locale to the link
-	actualLink = href;
+  // internal link, so we need to add the locale to the link
+  actualLink = href;
 }
 // remove trailing slash so IDs will work
 if (actualLink.endsWith("/") && actualLink !== "/") {
-	actualLink = actualLink.slice(0, -1);
+  actualLink = actualLink.slice(0, -1);
 }
 ---
 
