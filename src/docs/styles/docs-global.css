@@ -88,10 +88,7 @@
 
 	/* starwind preflight merged with Cosmic Themes */
 	* {
-		@apply border-border;
-	}
-	*:focus-visible {
-		@apply outline-outline !transition-none;
+		@apply border-border outline-outline/50;
 	}
 	html {
 		@apply bg-background text-foreground leading-[1.6rem] scheme-light dark:scheme-dark;
