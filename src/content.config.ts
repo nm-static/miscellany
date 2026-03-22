@@ -54,6 +54,7 @@ const docsCollection = defineCollection({
       pagefind: z.boolean().optional(),
       mappingKey: z.string().optional(),
       draft: z.boolean().optional(),
+      showTitle: z.boolean().optional(),
     }),
 });
 

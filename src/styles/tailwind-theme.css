@@ -35,8 +35,8 @@
   --font-fallback:
     "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif",
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-heading: "Inter Variable", var(--font-fallback);
-  --font-sans: "Inter Variable", var(--font-fallback);
+  --font-heading: "Imprima", var(--font-fallback);
+  --font-sans: "Heliotrope", var(--font-fallback);
   --font-mono:
     "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace";
 

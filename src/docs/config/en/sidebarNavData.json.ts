@@ -6,58 +6,78 @@ import type { DocsSidebarNavData } from "../types/configDataTypes";
 const sidebarNavData: DocsSidebarNavData = {
   /**
    * Documentation tabs configuration
-   * These define the different top-level documentation section tabs
+   * Organized by theme: recreational-math, schools, scicomm, other
    */
   tabs: [
     {
-      id: "main",
-      title: "Documentation",
-      description: "Main documentation",
-      icon: "tabler/file-text",
-      // Ordered list of sidebar sections for the 'main' tab
-      // The "id" of each section should match a folder in the docs content collection
+      id: "recreational-math",
+      title: "Recreational Math",
+      description: "Fun explorations of mathematics",
+      icon: "tabler/flame",
       sections: [
         {
-          id: "getting-started",
-          title: "Getting Started",
+          id: "cards-combinatorics-1",
+          title: "Cards and Combinatorics",
         },
         {
-          id: "components",
-          title: "Components",
-        },
-        {
-          id: "reference",
-          title: "Reference",
+          id: "cards-combinatorics-2",
+          title: "Card Magic",
         },
       ],
     },
     {
-      id: "api",
-      title: "API Reference",
-      description: "API documentation",
-      icon: "tabler/api-app",
-      // Ordered list of sidebar sections for the 'api' tab
-      sections: [
-        {
-          id: "endpoints",
-          title: "Endpoints",
-        },
-        {
-          id: "authentication",
-          title: "Authentication",
-        },
-      ],
-    },
-    {
-      id: "tutorials",
-      title: "Tutorials",
-      description: "Step-by-step tutorials",
+      id: "schools",
+      title: "Schools",
+      description: "GIAN courses and intensive programs",
       icon: "tabler/school",
-      // Ordered list of sidebar sections for the 'tutorials' tab
       sections: [
         {
-          id: "tips-and-tricks",
-          title: "Tips and Tricks",
+          id: "gian",
+          title: "Randomized Methods for Parameterized Algorithms",
+        },
+      ],
+    },
+    {
+      id: "scicomm",
+      title: "Science Communication",
+      description: "Science communication courses",
+      icon: "tabler/edit-circle",
+      sections: [
+        {
+          id: "visual-scicomm",
+          title: "Visual Science Communication",
+        },
+        {
+          id: "fundamentals-scicomm",
+          title: "Fundamentals of SciComm",
+        },
+      ],
+    },
+    {
+      id: "cs-research-101",
+      title: "CS Research 101",
+      description: "Getting started with research in Computer Science",
+      icon: "tabler/file-text",
+      sections: [
+        {
+          id: "cs-research-101",
+          title: "CS Research 101",
+        },
+      ],
+    },
+    {
+      id: "other",
+      title: "Other",
+      description: "Workshops and miscellaneous offerings",
+      icon: "tabler/bulb",
+      sections: [
+        {
+          id: "crypto",
+          title: "Modern Cryptography",
+        },
+        {
+          id: "dp-bootcamp",
+          title: "DP Bootcamp",
         },
       ],
     },

@@ -7,17 +7,24 @@ import { type navItem } from "../types/configDataTypes";
 
 const navConfig: navItem[] = [
   {
-    text: "Introduction",
-    link: "/docs/getting-started/",
+    text: "Recreational Math",
+    link: "/docs/cards-combinatorics-1/",
   },
   {
-    text: "Components",
-    link: "/docs/components/",
+    text: "Schools",
+    link: "/docs/gian/",
   },
   {
-    text: "Get Pathfinder",
-    link: "https://cosmicthemes.com/themes/pathfinder",
-    newTab: true,
+    text: "Science Communication",
+    link: "/docs/visual-scicomm/",
+  },
+  {
+    text: "CS Research 101",
+    link: "/docs/cs-research-101/",
+  },
+  {
+    text: "Other",
+    link: "/docs/crypto/",
   },
 ];
 

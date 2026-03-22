@@ -238,4 +238,50 @@
   .docs-markdown-content summary:not(:where(.not-content, .not-content *)) p:only-child {
     display: inline;
   }
+
+  /* Callout styles */
+  .docs-markdown-content .callout:not(:where(.not-content, .not-content *)) {
+    @apply my-4 rounded-lg border-l-4 p-4;
+  }
+
+  .docs-markdown-content .callout-title:not(:where(.not-content, .not-content *)) {
+    @apply text-foreground mb-2 font-semibold;
+  }
+
+  .docs-markdown-content .callout-body:not(:where(.not-content, .not-content *)) {
+    @apply text-foreground/80;
+  }
+
+  .docs-markdown-content .callout-body p:not(:where(.not-content, .not-content *)) {
+    @apply mt-0;
+  }
+
+  /* Callout variants */
+  .docs-markdown-content .callout-note:not(:where(.not-content, .not-content *)) {
+    @apply border-blue-500 bg-blue-500/10;
+  }
+  .docs-markdown-content .callout-note .callout-title {
+    @apply text-blue-600 dark:text-blue-400;
+  }
+
+  .docs-markdown-content .callout-tip:not(:where(.not-content, .not-content *)) {
+    @apply border-green-500 bg-green-500/10;
+  }
+  .docs-markdown-content .callout-tip .callout-title {
+    @apply text-green-600 dark:text-green-400;
+  }
+
+  .docs-markdown-content .callout-caution:not(:where(.not-content, .not-content *)) {
+    @apply border-yellow-500 bg-yellow-500/10;
+  }
+  .docs-markdown-content .callout-caution .callout-title {
+    @apply text-yellow-600 dark:text-yellow-400;
+  }
+
+  .docs-markdown-content .callout-danger:not(:where(.not-content, .not-content *)) {
+    @apply border-red-500 bg-red-500/10;
+  }
+  .docs-markdown-content .callout-danger .callout-title {
+    @apply text-red-600 dark:text-red-400;
+  }
 }

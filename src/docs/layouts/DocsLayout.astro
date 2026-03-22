@@ -21,7 +21,7 @@ interface Props {
 }
 
 const { doc, headings = [], sectionId = "main" } = Astro.props;
-const { title, description = "", sidebar, tableOfContents, pagefind = true } = doc.data;
+const { title, description = "", sidebar, tableOfContents, pagefind = true, showTitle = true } = doc.data;
 
 const minHeadingLevel = tableOfContents?.minHeadingLevel ?? 2;
 const maxHeadingLevel = tableOfContents?.maxHeadingLevel ?? 3;
@@ -74,9 +74,11 @@ const { prev, next } = await getAdjacentPages(doc.id, currLocale, sectionId);
         class="mr-auto w-full max-w-2xl scroll-mt-[calc(var(--nav-height)+1rem)] overflow-x-hidden pb-(--main-content-pt) md:pl-6 lg:mt-(--main-content-pt) lg:px-1 xl:mx-auto"
         data-pagefind-body={pagefind ? true : undefined}
       >
-        <div class="flex">
-          <h1 class="docs-h1 docs-text-gradient mb-8 pb-1">{title}</h1>
-        </div>
+        {showTitle && (
+          <div class="flex">
+            <h1 class="docs-h1 docs-text-gradient mb-8 pb-1">{title}</h1>
+          </div>
+        )}
         <div class="docs-markdown-content">
           <slot />
         </div>

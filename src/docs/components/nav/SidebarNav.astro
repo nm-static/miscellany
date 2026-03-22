@@ -74,7 +74,9 @@ if (sidebarTabs) {
 
         // If we have an index doc, use that as the first page
         if (indexDoc) {
-          const firstPageUrl = `/${docsRoute}/${indexDoc.id}`;
+          // Strip /index suffix for cleaner URLs (index pages are served at the directory path)
+          const docPath = indexDoc.id.replace(/\/index$/, '/');
+          const firstPageUrl = `/${docsRoute}/${docPath}`;
           firstPagesMap.set(tab.id, firstPageUrl);
           firstPageFound = true;
           break; // Exit loop once we've found the first page
@@ -97,7 +99,8 @@ if (sidebarTabs) {
           });
 
           // Use the first doc from the first section that has docs
-          const firstPageUrl = `/${docsRoute}/${sortedSectionDocs[0].id}`;
+          const docPath = sortedSectionDocs[0].id.replace(/\/index$/, '/');
+          const firstPageUrl = `/${docsRoute}/${docPath}`;
           firstPagesMap.set(tab.id, firstPageUrl);
           firstPageFound = true;
           break; // Exit loop once we've found the first page
@@ -122,7 +125,8 @@ if (sidebarTabs) {
         });
 
         if (sortedDocs.length > 0) {
-          const firstPageUrl = `/${docsRoute}/${sortedDocs[0].id}`;
+          const docPath = sortedDocs[0].id.replace(/\/index$/, '/');
+          const firstPageUrl = `/${docsRoute}/${docPath}`;
           firstPagesMap.set(tab.id, firstPageUrl);
         } else {
           // Fallback to section base route if no docs
@@ -146,7 +150,8 @@ if (sidebarTabs) {
         return a.data.title.localeCompare(b.data.title);
       });
 
-      const firstPageUrl = `/${docsRoute}/${sortedDocs[0].id}`;
+      const docPath = sortedDocs[0].id.replace(/\/index$/, '/');
+      const firstPageUrl = `/${docsRoute}/${docPath}`;
       firstPagesMap.set(tab.id, firstPageUrl);
     } else {
       // No docs and no sections or empty sections
@@ -164,9 +169,11 @@ const docsBySection = sectionFilteredDocs.reduce(
       acc[section] = [];
     }
 
+    // Strip /index suffix for cleaner URLs (index pages are served at the directory path)
+    const docPath = doc.id.replace(/\/index$/, '/');
     acc[section].push({
       text: doc.data.sidebar?.label ? doc.data.sidebar.label : doc.data.title,
-      link: `/${docsRoute}/${doc.id}`,
+      link: `/${docsRoute}/${docPath}`,
       order: doc.data.sidebar?.order,
       badge: doc.data.sidebar?.badge,
     });
@@ -188,22 +195,32 @@ const docsBySection = sectionFilteredDocs.reduce(
 const orderedSectionIds = currentTabSections.map((section) => section.id);
 const sectionIndexMap = new Map(orderedSectionIds.map((id, index) => [id, index]));
 
-// Sort sections according to the config order
-const sections = Object.keys(docsBySection).sort((a, b) => {
-  const aIndex = sectionIndexMap.get(a) ?? -1;
-  const bIndex = sectionIndexMap.get(b) ?? -1;
+// Create a set of valid section IDs for the current tab
+// For "one-off" courses, the tab ID equals the section/folder ID
+const validSectionIds = new Set(orderedSectionIds);
+// Also allow sections that match the tab ID (for one-off courses where folder = tab ID)
+if (currentTab?.id) {
+  validSectionIds.add(currentTab.id);
+}
 
-  // If neither section is in the config, sort by translated titles
-  if (aIndex === -1 && bIndex === -1) {
-    return getSectionTitle(a, sectionId, currLocale).localeCompare(
-      getSectionTitle(b, sectionId, currLocale),
-      currLocale,
-    );
-  }
+// Filter and sort sections - only include sections that are valid for the current tab
+const sections = Object.keys(docsBySection)
+  .filter((section) => validSectionIds.has(section))
+  .sort((a, b) => {
+    const aIndex = sectionIndexMap.get(a) ?? -1;
+    const bIndex = sectionIndexMap.get(b) ?? -1;
 
-  // Prioritize configured sections over unconfigured ones
-  return aIndex === -1 ? 1 : bIndex === -1 ? -1 : aIndex - bIndex;
-});
+    // If neither section is in the config, sort by translated titles
+    if (aIndex === -1 && bIndex === -1) {
+      return getSectionTitle(a, sectionId, currLocale).localeCompare(
+        getSectionTitle(b, sectionId, currLocale),
+        currLocale,
+      );
+    }
+
+    // Prioritize configured sections over unconfigured ones
+    return aIndex === -1 ? 1 : bIndex === -1 ? -1 : aIndex - bIndex;
+  });
 
 // Sort docs within each section
 for (const section of sections) {

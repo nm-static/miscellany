@@ -9,11 +9,11 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://pathfinder.cosmicthemes.com",
+  site: "https://courses.neeldhara.com",
   // i18n configuration must match src/docs/config/translationData.json.ts
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "fr"],
+    locales: ["en"],
     routing: {
       prefixDefaultLocale: false,
     },

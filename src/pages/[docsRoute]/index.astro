@@ -1,8 +1,6 @@
 ---
 import CtaGlow from "@/docs/components/cta/CtaGlow.astro";
-import FeatureGrid from "@/docs/components/features/FeatureGrid.astro";
 import Hero from "@/docs/components/hero/Hero.astro";
-import Testimonials from "@/docs/components/testimonials/Testimonials.astro";
 import { defaultLocale } from "@/docs/config/siteSettings.json";
 import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
@@ -29,13 +27,11 @@ const siteData = getTranslatedData("siteData", currLocale);
 <BaseLayoutDocs title={siteData.title} description={siteData.description}>
   <main class="overflow-hidden">
     <Hero />
-    <FeatureGrid />
-    <Testimonials />
     <CtaGlow
-      title="Ready to build your documentation?"
-      description="Get started with Pathfinder today and create beautiful, maintainable documentation that your users will love."
-      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
-      githubLink="https://github.com/Boston343"
+      title="Explore the courses"
+      description="Browse through the various short courses, workshops, and miscellaneous teaching offerings."
+      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/about`)}
+      githubLink="https://github.com/neeldhara"
     />
   </main>
 </BaseLayoutDocs>

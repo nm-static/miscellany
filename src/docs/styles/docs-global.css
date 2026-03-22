@@ -47,7 +47,17 @@
     --expressive-code-bg-darker: var(--color-base-900);
 
     /* default font */
-    font-family: "Inter Variable", var(--font-sans);
+    font-family: var(--font-sans);
+  }
+
+  /* Headings use Imprima */
+  #documentation-layout h1,
+  #documentation-layout h2,
+  #documentation-layout h3,
+  #documentation-layout h4,
+  #documentation-layout h5,
+  #documentation-layout h6 {
+    font-family: var(--font-heading);
   }
 
   #documentation-layout.dark,
