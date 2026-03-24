@@ -24,6 +24,7 @@ const courses = tabs.map((tab: any) => ({
   id: tab.id,
   title: tab.title,
   description: tab.description || "",
+  instructor: tab.instructor || "",
   group: tab.group || "other",
   groupLabel: groupLabels[tab.group] || tab.group,
   icon: tab.icon,
@@ -50,6 +51,9 @@ const courses = tabs.map((tab: any) => ({
         <div class="flex flex-wrap gap-4">
           <a href="#courses" class="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
             Browse Courses
+          </a>
+          <a href="https://grokabook.com" target="_blank" rel="noopener noreferrer" class="px-6 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary/10 transition-colors">
+            GrokaBook.com
           </a>
         </div>
       </div>
@@ -92,6 +96,11 @@ const courses = tabs.map((tab: any) => ({
               <h3 class="text-lg font-semibold mt-2 mb-2 group-hover:text-primary transition-colors">
                 {course.title}
               </h3>
+              {course.instructor && (
+                <p class="text-sm text-muted-foreground mb-1">
+                  <span class="font-medium">Instructor:</span> {course.instructor}
+                </p>
+              )}
               {course.description && (
                 <p class="text-sm text-muted-foreground line-clamp-2">
                   {course.description}

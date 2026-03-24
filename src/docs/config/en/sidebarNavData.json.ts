@@ -14,6 +14,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "recreational-math",
       title: "2019 · Card Magic",
       description: "Exploring mathematics through card tricks",
+      instructor: "Manish Jain",
       icon: "tabler/flame",
       sections: [
         {
@@ -27,6 +28,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "recreational-math",
       title: "2025 · Card Magic",
       description: "Exploring mathematics through card tricks",
+      instructor: "Ramprasad Saptharishi",
       icon: "tabler/flame",
       sections: [
         {
@@ -42,6 +44,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "schools",
       title: "Randomized Methods for Parameterized Algorithms",
       description: "GIAN Course on Randomized Methods for Parameterized Algorithms",
+      instructor: "Daniel Lokshtanov",
       icon: "tabler/school",
       sections: [
         {
@@ -57,6 +60,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "scicomm",
       title: "Visual Science Communication",
       description: "Communicating science through visual media",
+      instructor: "Ipsa Jain",
       icon: "tabler/edit-circle",
       sections: [
         {
@@ -70,6 +74,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "scicomm",
       title: "Fundamentals of Science Communication",
       description: "Core principles of effective science communication",
+      instructor: "Siddharth Kankaria",
       icon: "tabler/edit-circle",
       sections: [
         {
@@ -85,6 +90,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "soft-skills",
       title: "CS Research 101",
       description: "A short and mildly opinionated course for anyone curious about getting started with research in Computer Science",
+      instructor: "Neeldhara Misra and Shashank Srikant",
       icon: "tabler/file-text",
       sections: [
         {
@@ -100,6 +106,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "other",
       title: "Modern Cryptography",
       description: "A nano-course in modern cryptography",
+      instructor: "Venkata Koppula",
       icon: "tabler/bulb",
       sections: [
         {
@@ -113,6 +120,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "other",
       title: "Dynamic Programming Bootcamp",
       description: "An intensive bootcamp on dynamic programming techniques",
+      instructor: "Priyansh Agarwal",
       icon: "tabler/bulb",
       sections: [
         {
@@ -126,6 +134,7 @@ const sidebarNavData: DocsSidebarNavData = {
       group: "other",
       title: "Classical Information Theory",
       description: "Classical Information Theory",
+      instructor: "Neeldhara Misra and Aditya Nema",
       icon: "tabler/bulb",
       sections: [
         {

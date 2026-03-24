@@ -487,6 +487,22 @@ function updateSidebarNavData(folders) {
         }
       }
     }
+
+    // Update instructor if present in vault
+    const instructor = (fm.instructor || "").replace(/^"|"$/g, "");
+    if (instructor) {
+      const instrRegex = new RegExp(
+        `(id: "${sectionName}",\\n\\s+group: "[^"]*",\\n\\s+title: "[^"]*",\\n\\s+description: "[^"]*",\\n\\s+instructor: )"[^"]*"`,
+      );
+      if (instrRegex.test(content)) {
+        const before = content;
+        content = content.replace(instrRegex, `$1"${instructor}"`);
+        if (content !== before) {
+          log(`  Updated instructor for ${sectionName}: "${instructor}"`);
+          updated = true;
+        }
+      }
+    }
   }
 
   if (updated && !dryRun) {

@@ -75,6 +75,10 @@ export interface DocsTab {
    */
   icon?: string;
   /**
+   * Instructor name(s) for the course
+   */
+  instructor?: string;
+  /**
    * Group identifier for top-nav categorization.
    * Tabs with the same group appear together in the sidebar when any tab in the group is active.
    */
