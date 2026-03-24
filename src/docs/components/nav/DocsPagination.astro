@@ -1,5 +1,5 @@
 ---
-import { docsRoute } from "@/docs/js/docsUtils";
+import { getRouteForTab } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
 
@@ -9,6 +9,7 @@ import ChevronLeft from "@tabler/icons/outline/chevron-left.svg";
 import ChevronRight from "@tabler/icons/outline/chevron-right.svg";
 
 interface Props {
+  sectionId?: string;
   prev: {
     slug: string;
     title: string;
@@ -19,14 +20,15 @@ interface Props {
   } | null;
 }
 
-const { prev, next } = Astro.props;
+const { prev, next, sectionId = "main" } = Astro.props;
+const route = getRouteForTab(sectionId, currLocale);
 ---
 
 <nav class="mt-8 flex items-center justify-between pt-8">
   {
     prev && (
       <a
-        href={getLocalizedRoute(currLocale, `/${docsRoute}/${prev.slug}`)}
+        href={getLocalizedRoute(currLocale, `/${route}/${prev.slug}`)}
         class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
       >
         <ChevronLeft class="size-4 transition-transform group-hover:-translate-x-1" />
@@ -38,7 +40,7 @@ const { prev, next } = Astro.props;
   {
     next && (
       <a
-        href={getLocalizedRoute(currLocale, `/${docsRoute}/${next.slug}`)}
+        href={getLocalizedRoute(currLocale, `/${route}/${next.slug}`)}
         class="group text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
       >
         {next.title}

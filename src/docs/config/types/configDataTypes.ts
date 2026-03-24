@@ -75,6 +75,11 @@ export interface DocsTab {
    */
   icon?: string;
   /**
+   * Group identifier for top-nav categorization.
+   * Tabs with the same group appear together in the sidebar when any tab in the group is active.
+   */
+  group?: string;
+  /**
    * Ordered list of sidebar sections for this tab
    * The order determines the display order in navigation
    */

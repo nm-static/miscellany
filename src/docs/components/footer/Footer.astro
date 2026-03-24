@@ -1,7 +1,6 @@
 ---
 import DocsLogo from "@/docs/components/docs-logo/DocsLogo.astro";
 import SocialIconSimple from "@/docs/components/social/SocialIconSimple.astro";
-import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getTranslatedData } from "@/docs/js/translationUtils";
 
@@ -18,15 +17,12 @@ interface FooterLinkItem {
   newTab?: boolean;
 }
 
-const docLinks: FooterLinkItem[] = [
-  { label: "Getting Started", href: `/${docsRoute}/getting-started`, newTab: false },
-  { label: "Components", href: `/${docsRoute}/components`, newTab: false },
-  { label: "Get Pathfinder", href: "https://cosmicthemes.com/themes/pathfinder", newTab: true },
-];
-
-const communityLinks: FooterLinkItem[] = [
-  { label: "GitHub", href: "https://github.com/Boston343", newTab: true },
-  { label: "Support", href: "https://cosmicthemes.com/support/", newTab: true },
+const groupLinks: FooterLinkItem[] = [
+  { label: "Recreational Math", href: "/recreational-math/cards-combinatorics-1/", newTab: false },
+  { label: "Schools", href: "/schools/gian/", newTab: false },
+  { label: "Science Communication", href: "/scicomm/visual-scicomm/", newTab: false },
+  { label: "Soft Skills", href: "/soft-skills/cs-research-101/", newTab: false },
+  { label: "Other", href: "/other/crypto/", newTab: false },
 ];
 ---
 
@@ -46,23 +42,12 @@ const communityLinks: FooterLinkItem[] = [
         </div>
       </div>
 
-      <!-- Documentation Links -->
-      <div class="grid gap-8 sm:min-w-1/3 sm:grid-cols-2 md:order-2">
+      <!-- Group Links -->
+      <div class="md:order-2">
         <div class="flex flex-col gap-2">
-          <h3 class="font-semibold">Documentation</h3>
+          <h3 class="font-semibold">Courses</h3>
           {
-            docLinks.map((link) => (
-              <FooterLink href={link.href} newTab={link.newTab}>
-                {link.label}
-              </FooterLink>
-            ))
-          }
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <h3 class="font-semibold">Community</h3>
-          {
-            communityLinks.map((link) => (
+            groupLinks.map((link) => (
               <FooterLink href={link.href} newTab={link.newTab}>
                 {link.label}
               </FooterLink>

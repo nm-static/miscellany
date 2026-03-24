@@ -1,14 +1,13 @@
 ---
-title: "Cards and Combinatorics"
+title: "2019 · Card Magic"
 showTitle: false
 description: "Exploring mathematics through card tricks"
 theme: "recreational-math"
-section: "recreational-math"
+section: "cards-combinatorics-1"
 sidebar:
   label: "Overview"
   order: 1
 ---
-
 
 ## Cards and Combinatorics
 

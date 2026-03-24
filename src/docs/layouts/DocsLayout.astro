@@ -84,7 +84,7 @@ const { prev, next } = await getAdjacentPages(doc.id, currLocale, sectionId);
         </div>
 
         {/* Previous/Next Navigation */}
-        {siteSettings.pagination !== false && <DocsPagination prev={prev} next={next} />}
+        {siteSettings.pagination !== false && <DocsPagination prev={prev} next={next} sectionId={sectionId} />}
       </div>
     </main>
 

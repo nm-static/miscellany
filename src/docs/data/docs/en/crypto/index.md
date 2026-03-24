@@ -3,7 +3,7 @@ title: "Modern Cryptography"
 showTitle: false
 description: "A nano-course in modern cryptography"
 theme: "other"
-section: "other"
+section: "crypto"
 sidebar:
   label: "Overview"
 ---

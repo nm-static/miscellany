@@ -3,7 +3,7 @@ title: "Visual Science Communication"
 showTitle: false
 description: "Communicating science through visual media"
 theme: "scicomm"
-section: "scicomm"
+section: "visual-scicomm"
 sidebar:
   label: "Overview"
 ---

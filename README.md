@@ -1,82 +1,165 @@
-# Welcome to Pathfinder!
+# Miscellany — Short Courses & Workshops
 
-This theme uses Astro v5 and Tailwind CSS v4. It is designed so that it can be used as a standalone docs site, but it is also designed to easily integrate with other templates by Cosmic Themes.
+An Astro documentation site for miscellaneous teaching offerings, built with the Pathfinder theme. Content is authored in Obsidian and parsed into Astro-compatible markdown.
 
-## Quickstart
+## Architecture: 3-Level Nesting
 
-1. To get started, first install all necessary packages with `npm install` or `pnpm install`, then run an initial build to make sure the setup works with `npm run build` or `pnpm build`.
-2. Copy the Pagefind build (for site search) to be available for the dev environment. This varies depending on your OS. I've created a few commands to help.
-   - For Windows, run `npm run winsearch`
-   - For OSX or Linux, run `npm run osxsearch`
-3. Next, you'll want to configure your site i18n setup (one language, or multiple). Simply run the command `npm run docs:config-i18n` and follow the script instructions to get setup! For further information, see the [i18n documentation](https://cosmicthemes.com/docs/i18n/).
-4. Now you can setup the site to your liking!
-   - [Style customization](https://cosmicthemes.com/docs/styles/)
-   - [Content editing](https://cosmicthemes.com/docs/content/)
-   - [Animations](https://cosmicthemes.com/docs/animations/)
-   - [Forms](https://cosmicthemes.com/docs/contact-form/)
+The site uses a 3-level navigation hierarchy:
 
-Should you need any assistance, send me a message at support@cosmicthemes.com
+```
+Top Nav (group)          e.g. "Recreational Math", "Schools", "Soft Skills"
+  └── Sidebar Box (tab)  e.g. "Cards and Combinatorics", "Card Magic"
+        └── Pages         e.g. "Overview", "Module 1", "Module 2"
+```
 
-## Code Intros
+### Level 1: Groups (Top Nav)
 
-I have created a few code tours to help introduce you to the codebase. You will need the extension [Code Tour](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.codetour) to view them in VSCode or another IDE.
+Defined in `src/docs/config/en/navData.json.ts`. Each top nav item links to the first page of a course in that group.
 
-## Code Structure
+### Level 2: Tabs (Sidebar Boxes)
 
-The code is structured with most items under the `src/docs` directory. This makes it easy to drop that entire folder into an existing Cosmic Themes project and to add docs functionality in a matter of minutes.
+Defined in `src/docs/config/en/sidebarNavData.json.ts`. Each course is a **tab** with:
+- `id` — must match the course's folder name in the vault and in `src/docs/data/docs/en/`
+- `group` — determines which top-nav category the tab belongs to
+- `title`, `description`, `icon` — display metadata
+- `sections` — sub-folder groupings within the course (typically just one matching the tab id)
 
-## Configuration Options
+Tabs with the same `group` appear together as clickable boxes in the sidebar.
 
-Overall site configuration is done in the `src/docs/config/` folder. Most settings are inside individual language folders in order to make it easier to handle translations.
+### Level 3: Pages
 
-### Site Settings
+Individual markdown files inside each course folder. Each page's frontmatter `section` field must match its tab `id`.
 
-The `src/docs/config/siteSettings.json.ts` file is used to configure the site settings. These include things like whether to enable view transitions, whether to enable animations, and whether to show copy link buttons for docs headings.
+## Obsidian Vault Structure
 
-### Site Data
+The vault lives at `/Users/neeldhara/repos/nm-obsidian/teaching/miscellany/` (configurable via `--vault` flag).
 
-The `src/docs/config/[language]/siteData.json.ts` file is used to configure the site data. This includes things like the site title, description, social links, and default image.
+```
+miscellany/
+  course-name/
+    public.md     ← main page (becomes index.md)
+    host.md       ← excluded from parsing (private notes)
+    topic-a.md    ← subpage (visible in sidebar)
+    topic-b.md    ← subpage (visible in sidebar)
+```
 
-### Nav Data
+### Frontmatter Convention for `public.md`
 
-Configure your navigation data for the top navbar in the `src/docs/config/[language]/navData.json.ts` file.
+```yaml
+---
+title: "Course Title"
+description: "Brief description"
+theme: "course-name"       # MUST equal the folder name
+section: "course-name"     # MUST equal the folder name
+sidebar:
+  order: 1                 # optional: controls sort order
+---
+```
 
-### Sidebar Layout
+**Both `theme` and `section` must equal the folder name.** The parser enforces this by auto-defaulting both to the folder name (with a warning if overriding), so technically you can omit them — but setting them explicitly avoids confusion.
 
-Configure the order for your documentation sections in the `src/docs/config/[language]/sidebarNavData.json.ts` file.
+- `section` — tells Astro which sidebar tab this page belongs to
+- `theme` — when it equals the folder name, all subpages (extra `.md` files) become visible in the sidebar
 
-### Robots
+### Subpage Files
 
-For robots like Google to see the correct sitemap, you will want to edit the `public/robots.txt` file to use your website domain.
+Any `.md` file in the course folder other than `public.md` and `host.md` is treated as a subpage:
+- Subpages inherit `theme` and `section` from `public.md`
+- They appear in the sidebar sorted alphabetically by filename
+- Files named `mN.md` (e.g., `m1.md`, `m2.md`) get auto-labeled "Module N"
+- Other files use the first `# Heading` as the sidebar label
+- To hide a subpage from the sidebar, add `sidebar: { hidden: true }` to its frontmatter
 
-## More Resources
+## Parser
 
-- See my blog post on [recommended Astro web development setup](https://cosmicthemes.com/blog/astro-web-development-setup/).
-- You can learn more information from the [theme docs](https://cosmicthemes.com/docs/) page on the [Cosmic Themes Website](https://cosmicthemes.com/).
-- For support, see the [support page](https://cosmicthemes.com/support/).
-- [License details](https://cosmicthemes.com/license/)
+Run the parser to sync from Obsidian to the Astro site:
 
-## General Astro Info
+```bash
+# Default (uses configured vault path)
+node parse.mjs
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+# Custom vault path
+node parse.mjs --vault /path/to/vault
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+# Preview without writing files
+node parse.mjs --dry-run
+```
 
-Any static assets, like images, can be placed in the `public/` directory. I also frequently use `src/assets` for images when using Astro asssets for image optimization.
+The parser:
+1. Reads each course folder's `public.md` as the index page
+2. Processes additional `.md` files as subpages (excludes `host.md`)
+3. Transforms Obsidian/Quarto callouts to HTML
+4. Converts `![[image.jpg]]` embeds to standard markdown
+5. Resolves `[[wikilinks]]` to relative URLs
+6. Copies referenced images to `public/images/docs/`
+7. Removes stale output folders that no longer exist in the vault
+8. Auto-defaults `section` and `theme` to the folder name (warns if overriding)
 
-### Commands
+## Adding a New Course
 
-All commands are run from the root of the project, from a terminal:
+1. **Create the vault folder:** `miscellany/my-new-course/`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. **Add `public.md`** with frontmatter:
+   ```yaml
+   ---
+   title: "My New Course"
+   description: "Description here"
+   theme: "my-new-course"
+   section: "my-new-course"
+   ---
+   ```
 
-### Want to learn more?
+3. **Add a tab** in `src/docs/config/en/sidebarNavData.json.ts`:
+   ```ts
+   {
+     id: "my-new-course",
+     group: "existing-group",  // or a new group name
+     title: "My New Course",
+     icon: "tabler/some-icon",
+     sections: [{ id: "my-new-course", title: "My New Course" }],
+   },
+   ```
 
-Feel free to check [the documentation](https://docs.astro.build) or jump into the [Discord server](https://astro.build/chat).
+4. **If creating a new group**, add it to `src/docs/config/en/navData.json.ts`:
+   ```ts
+   {
+     text: "New Group Name",
+     link: "/docs/my-new-course/",
+   },
+   ```
+
+5. **Run the parser:** `node parse.mjs`
+
+6. **Build:** `npm run build`
+
+## Current Groups
+
+| Group | Top Nav Label | Courses |
+|-------|--------------|---------|
+| `recreational-math` | Recreational Math | cards-combinatorics-1, cards-combinatorics-2 |
+| `schools` | Schools | gian |
+| `scicomm` | Science Communication | visual-scicomm, fundamentals-scicomm |
+| `soft-skills` | Soft Skills | cs-research-101 |
+| `other` | Other | crypto, dp-bootcamp |
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `parse.mjs` | Obsidian-to-Astro parser |
+| `src/docs/config/en/navData.json.ts` | Top navigation links |
+| `src/docs/config/en/sidebarNavData.json.ts` | Sidebar tabs with group assignments |
+| `src/docs/config/types/configDataTypes.ts` | TypeScript types for config |
+| `src/docs/js/docsUtils.ts` | Helper functions (getTabById, getTabsByGroup, etc.) |
+| `src/docs/components/nav/SidebarNav.astro` | Sidebar rendering (filters tabs by group) |
+| `src/content.config.ts` | Astro content collection schema |
+| `src/docs/data/docs/en/` | Generated content (do not edit directly) |
+
+## Development
+
+```bash
+npm install          # Install dependencies
+npm run dev          # Start dev server at localhost:4321
+npm run build        # Production build to ./dist/
+npm run preview      # Preview production build
+```

@@ -3,7 +3,7 @@ title: "Fundamentals of Science Communication"
 showTitle: false
 description: "Core principles of effective science communication"
 theme: "scicomm"
-section: "scicomm"
+section: "fundamentals-scicomm"
 sidebar:
   label: "Overview"
 ---

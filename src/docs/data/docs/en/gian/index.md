@@ -3,7 +3,7 @@ title: "Randomized Methods for Parameterized Algorithms"
 showTitle: false
 description: "GIAN Course on Randomized Methods for Parameterized Algorithms"
 theme: "schools"
-section: "schools"
+section: "gian"
 sidebar:
   label: "Overview"
   order: 1

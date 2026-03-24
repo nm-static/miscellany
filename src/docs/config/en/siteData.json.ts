@@ -13,17 +13,40 @@ const docsSiteData: DocsSiteData = {
   ],
   footerSocials: [
     {
+      social: "Website",
+      link: "https://www.neeldhara.com",
+      icon: "tabler/world",
+    },
+    {
+      social: "Twitter",
+      link: "https://twitter.com/neaborat",
+      icon: "tabler/brand-x",
+    },
+    {
+      social: "LinkedIn",
+      link: "https://www.linkedin.com/in/neeldhara/",
+      icon: "tabler/brand-linkedin",
+    },
+    {
+      social: "BlueSky",
+      link: "https://bsky.app/profile/neeldhara.com",
+      icon: "tabler/brand-bluesky",
+    },
+    {
+      social: "Mastodon",
+      link: "https://mathstodon.xyz/@neeldhara",
+      icon: "tabler/brand-mastodon",
+    },
+    {
       social: "GitHub",
       link: "https://github.com/neeldhara",
       icon: "tabler/brand-github",
     },
   ],
-  // default image for meta tags if the page doesn't have an image already
   defaultImage: {
     src: "/images/default-og.png",
     alt: "Short Courses and Miscellany",
   },
-  // Your information for SEO purposes
   author: {
     name: "Neeldhara Misra",
     email: "neeldhara.m@iitgn.ac.in",

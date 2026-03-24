@@ -3,7 +3,7 @@ title: "Dynamic Programming Bootcamp"
 showTitle: false
 description: "An intensive bootcamp on dynamic programming techniques"
 theme: "other"
-section: "other"
+section: "dp-bootcamp"
 sidebar:
   label: "Overview"
   order: 2

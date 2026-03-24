@@ -2,22 +2,24 @@
 import CtaGlow from "@/docs/components/cta/CtaGlow.astro";
 import Hero from "@/docs/components/hero/Hero.astro";
 import { defaultLocale } from "@/docs/config/siteSettings.json";
-import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData } from "@/docs/js/translationUtils";
 import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
 
 export async function getStaticPaths() {
-  // replace any starting or ending slashes, then remove anything before the first slash remaining if necessary
-  const localizedDocsRoute = getLocalizedRoute(defaultLocale, docsRoute)
-    .replace(/^\/|\/$/g, "")
-    .replace(/^[^/]+\//, "");
+  const sidebarData = getTranslatedData("sidebarNavData", defaultLocale);
+  const tabs = sidebarData.tabs;
 
-  return [
-    {
-      params: { docsRoute: localizedDocsRoute },
-    },
-  ];
+  // Collect unique group names to generate index pages for each group route
+  const groups = new Set<string>();
+  for (const tab of tabs) {
+    if (tab.group) groups.add(tab.group);
+  }
+
+  return [...groups].map((group) => ({
+    params: { docsRoute: group },
+    props: { group },
+  }));
 }
 
 const currLocale = getLocaleFromUrl(Astro.url);
@@ -30,7 +32,7 @@ const siteData = getTranslatedData("siteData", currLocale);
     <CtaGlow
       title="Explore the courses"
       description="Browse through the various short courses, workshops, and miscellaneous teaching offerings."
-      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/about`)}
+      primaryLink={getLocalizedRoute(currLocale, `/recreational-math/cards-combinatorics-1/`)}
       githubLink="https://github.com/neeldhara"
     />
   </main>

@@ -31,6 +31,41 @@ export const getTabById = (tabId: string, locale: LocaleType): DocsTab | undefin
 };
 
 /**
+ * Get the group a tab belongs to
+ */
+export const getGroupForTab = (tabId: string, locale: LocaleType): string | undefined => {
+  const tab = getTabById(tabId, locale);
+  return tab?.group;
+};
+
+/**
+ * Get all tabs in the same group as the given tab
+ */
+export const getTabsByGroup = (tabId: string, locale: LocaleType): DocsTab[] => {
+  const group = getGroupForTab(tabId, locale);
+  if (!group) return [];
+  return getTranslatedTabs(locale).filter((tab) => tab.group === group);
+};
+
+/**
+ * Get the route prefix for a tab (its group name).
+ * URLs are structured as /{group}/{slug} instead of /docs/{slug}.
+ */
+export const getRouteForTab = (tabId: string, locale: LocaleType): string => {
+  const group = getGroupForTab(tabId, locale);
+  return group || docsRoute;
+};
+
+/**
+ * Build a full path for a doc given its id and tab.
+ */
+export const buildDocPath = (docId: string, tabId: string, locale: LocaleType): string => {
+  const route = getRouteForTab(tabId, locale);
+  const docPath = docId.replace(/\/index$/, "/");
+  return `/${route}/${docPath}`;
+};
+
+/**
  * Get sections for a specific tab
  */
 export const getTabSections = (tabId: string, locale: LocaleType): DocsSection[] => {

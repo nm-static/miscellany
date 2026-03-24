@@ -2,7 +2,7 @@
 title: "Homework 1"
 showTitle: false
 description: "A short and mildly opinionated course for anyone curious about getting started with research in Computer Science"
-theme: "cs-research-101"
+theme: "soft-skills"
 section: "cs-research-101"
 sidebar:
   hidden: true

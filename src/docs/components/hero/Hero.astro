@@ -1,6 +1,5 @@
 ---
 import Button from "@/docs/components/button/Button.astro";
-import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
 import { useTranslations } from "@/docs/js/translationUtils";
@@ -56,13 +55,13 @@ const t = useTranslations(currLocale);
     </p>
     <div class="flex flex-wrap items-center justify-center gap-4">
       <Button
-        href={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started`)}
+        href={getLocalizedRoute(currLocale, `/recreational-math/cards-combinatorics-1/`)}
         variant="secondary"
       >
-        Get Started
+        Explore Courses
       </Button>
-      <Button href={getLocalizedRoute(currLocale, `/${docsRoute}/components`)} variant="ghost">
-        Components
+      <Button href={getLocalizedRoute(currLocale, `/soft-skills/cs-research-101/`)} variant="ghost">
+        CS Research 101
       </Button>
     </div>
   </div>

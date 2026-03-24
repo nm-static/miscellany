@@ -9,8 +9,10 @@ import { siteSettings } from "@/docs/config/siteSettings.json";
 import {
   docsRoute,
   getOrderedSectionIds,
+  getRouteForTab,
   getSectionTitle,
   getTabById,
+  getTabsByGroup,
   getTabSections,
 } from "@/docs/js/docsUtils";
 import { filterCollectionByLanguage } from "@/docs/js/localeUtils";
@@ -27,8 +29,9 @@ const { sectionId = "main" } = Astro.props;
 const currLocale = getLocaleFromUrl(Astro.url);
 const sidebarData = getTranslatedData("sidebarNavData", currLocale);
 
-// Get localized documentation tabs based on current locale
-const sidebarTabs = sidebarData.tabs;
+// Get only tabs in the same group as the current tab
+const allTabs = sidebarData.tabs;
+const sidebarTabs = getTabsByGroup(sectionId, currLocale);
 // Get the current tab configuration
 const currentTab = getTabById(sectionId, currLocale);
 // Get sections for the current tab
@@ -49,9 +52,9 @@ const filteredDocs = filterCollectionByLanguage(allDocs, currLocale);
 const sectionFilteredDocs = filteredDocs.filter((doc) => doc.data.section === sectionId);
 
 // Find the first page for each tab based on its ordered sections
-if (sidebarTabs) {
+if (allTabs) {
   // For each tab (documentation section)
-  for (const tab of sidebarTabs) {
+  for (const tab of allTabs) {
     // Get all docs for this tab section
     const tabDocs = filteredDocs.filter((doc) => doc.data.section === tab.id);
 
@@ -73,92 +76,69 @@ if (sidebarTabs) {
         );
 
         // If we have an index doc, use that as the first page
+        const tabRoute = getRouteForTab(tab.id, currLocale);
+
         if (indexDoc) {
-          // Strip /index suffix for cleaner URLs (index pages are served at the directory path)
           const docPath = indexDoc.id.replace(/\/index$/, '/');
-          const firstPageUrl = `/${docsRoute}/${docPath}`;
-          firstPagesMap.set(tab.id, firstPageUrl);
+          firstPagesMap.set(tab.id, `/${tabRoute}/${docPath}`);
           firstPageFound = true;
-          break; // Exit loop once we've found the first page
+          break;
         }
-        // If we have other docs in this section
         else if (sectionDocs.length > 0) {
-          // Sort the docs within this section
           const sortedSectionDocs = [...sectionDocs].sort((a, b) => {
-            // If both have order, sort by order
             if (a.data.sidebar?.order !== undefined && b.data.sidebar?.order !== undefined) {
               return a.data.sidebar.order - b.data.sidebar.order;
             }
-
-            // If only one has order, it comes first
             if (a.data.sidebar?.order !== undefined) return -1;
             if (b.data.sidebar?.order !== undefined) return 1;
-
-            // If neither has order, sort by title
             return a.data.title.localeCompare(b.data.title);
           });
 
-          // Use the first doc from the first section that has docs
           const docPath = sortedSectionDocs[0].id.replace(/\/index$/, '/');
-          const firstPageUrl = `/${docsRoute}/${docPath}`;
-          firstPagesMap.set(tab.id, firstPageUrl);
+          firstPagesMap.set(tab.id, `/${tabRoute}/${docPath}`);
           firstPageFound = true;
-          break; // Exit loop once we've found the first page
+          break;
         }
       }
 
-      // If no docs found in any section, fall back to generic approach
       if (!firstPageFound) {
-        // Sort all tab docs as a fallback
         const sortedDocs = [...tabDocs].sort((a, b) => {
-          // If both have order, sort by order
           if (a.data.sidebar?.order !== undefined && b.data.sidebar?.order !== undefined) {
             return a.data.sidebar.order - b.data.sidebar.order;
           }
-
-          // If only one has order, it comes first
           if (a.data.sidebar?.order !== undefined) return -1;
           if (b.data.sidebar?.order !== undefined) return 1;
-
-          // If neither has order, sort by title
           return a.data.title.localeCompare(b.data.title);
         });
 
         if (sortedDocs.length > 0) {
           const docPath = sortedDocs[0].id.replace(/\/index$/, '/');
-          const firstPageUrl = `/${docsRoute}/${docPath}`;
-          firstPagesMap.set(tab.id, firstPageUrl);
+          firstPagesMap.set(tab.id, `/${tabRoute}/${docPath}`);
         } else {
-          // Fallback to section base route if no docs
-          firstPagesMap.set(tab.id, `/${docsRoute}`);
+          firstPagesMap.set(tab.id, `/`);
         }
       }
     } else if (tabDocs.length > 0) {
-      // No sections configured but we have docs
-      // Use standard sorting logic as fallback
+      const tabRoute = getRouteForTab(tab.id, currLocale);
       const sortedDocs = [...tabDocs].sort((a, b) => {
-        // If both have order, sort by order
         if (a.data.sidebar?.order !== undefined && b.data.sidebar?.order !== undefined) {
           return a.data.sidebar.order - b.data.sidebar.order;
         }
-
-        // If only one has order, it comes first
         if (a.data.sidebar?.order !== undefined) return -1;
         if (b.data.sidebar?.order !== undefined) return 1;
-
-        // If neither has order, sort by title
         return a.data.title.localeCompare(b.data.title);
       });
 
       const docPath = sortedDocs[0].id.replace(/\/index$/, '/');
-      const firstPageUrl = `/${docsRoute}/${docPath}`;
-      firstPagesMap.set(tab.id, firstPageUrl);
+      firstPagesMap.set(tab.id, `/${tabRoute}/${docPath}`);
     } else {
-      // No docs and no sections or empty sections
-      firstPagesMap.set(tab.id, `/${docsRoute}`);
+      firstPagesMap.set(tab.id, `/`);
     }
   }
 }
+
+// Get the route for the current section's tab
+const currentRoute = getRouteForTab(sectionId, currLocale);
 
 // Group docs by their top-level directory
 const docsBySection = sectionFilteredDocs.reduce(
@@ -173,7 +153,7 @@ const docsBySection = sectionFilteredDocs.reduce(
     const docPath = doc.id.replace(/\/index$/, '/');
     acc[section].push({
       text: doc.data.sidebar?.label ? doc.data.sidebar.label : doc.data.title,
-      link: `/${docsRoute}/${docPath}`,
+      link: `/${currentRoute}/${docPath}`,
       order: doc.data.sidebar?.order,
       badge: doc.data.sidebar?.badge,
     });
@@ -248,7 +228,7 @@ for (const section of sections) {
 
   {/* Documentation Tabs Selector */}
   {
-    sidebarTabs && sidebarTabs.length > 1 && (
+    sidebarTabs && sidebarTabs.length > 0 && (
       <div class="mb-6">
         <nav aria-label="Documentation Sections" class="bg-muted/30 mr-4 rounded-md border p-2">
           <ul class="space-y-1">

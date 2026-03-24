@@ -1,11 +1,12 @@
 ---
-title: "Cards and Combinatorics"
+title: "2025 · Card Magic"
 showTitle: false
 description: "Exploring mathematics through card tricks"
 theme: "recreational-math"
-section: "recreational-math"
+section: "cards-combinatorics-2"
 sidebar:
   label: "Overview"
+  order: 1
 format:
   html:
     css: "styles.css"
@@ -16,14 +17,11 @@ format:
 ###### A Short Course on Card Magic
 _Prof. Ramprasad Saptharishi, TIFR Mumbai_
 
-<details class="callout callout-note" open>
-<summary class="callout-title">About the Course</summary>
-<div class="callout-body">
-
 Card magic is a fascinating blend of mathematics, psychology, and performance art. In this short course, we'll explore some fundamental principles of card magic, focusing on mathematical techniques that create seemingly impossible effects. While the focus will be on self-working tricks and the math that drives them, we will also cover practical and presentation aspects of card magic.
 
-</div>
-</details>
+---
+
+This course is open to anyone interested in magic, mathematics, or both! No prior experience with card magic is required. Participants should bring a standard deck of playing cards. If you are at IIT Gandhinagar, sign up through our short course mechanism. We will shortly post a link to a WhatsApp group that you can join to stay up to date on proceedings.
 
 <details class="callout callout-note" open>
 <summary class="callout-title">About the Instructor</summary>
@@ -54,15 +52,6 @@ His academic interests are in pseudorandomness and derandomization, algebraic ci
 </details>
 
 <details class="callout callout-note" open>
-<summary class="callout-title">Target Audience</summary>
-<div class="callout-body">
-
-This course is open to anyone interested in magic, mathematics, or both! No prior experience with card magic is required. Participants should bring a standard deck of playing cards. If you are at IIT Gandhinagar, sign up through our short course mechanism. We will shortly post a link to a WhatsApp group that you can join to stay up to date on proceedings.
-
-</div>
-</details>
-
-<details class="callout callout-note" open>
 <summary class="callout-title">Recommended Reading</summary>
 <div class="callout-body">
 
@@ -73,44 +62,4 @@ This course is open to anyone interested in magic, mathematics, or both! No prio
 
 </div>
 </details>
-
----
-
-### Teaching Plan
-
-<div class="callout callout-tip">
-<div class="callout-title">Session 1: Introduction to Card Magic</div>
-<div class="callout-body">
-
-We'll start with the basics of card handling and some fundamental mathematical principles that underlie many card tricks. Topics include shuffle tracking, the Gilbreath principle, and basic probability in card magic.
-
-</div>
-</div>
-
-<div class="callout callout-tip">
-<div class="callout-title">Session 2: Self-Working Card Tricks</div>
-<div class="callout-body">
-
-We now demonstrate some concrete card tricks that leverage the principles we saw so far. These tricks work automatically without sleight of hand. We'll work out how the principles from before support the magic in these tricks.
-
-</div>
-</div>
-
-<div class="callout callout-tip">
-<div class="callout-title">Session 3: More Shuffles</div>
-<div class="callout-body">
-
-Explore more shuffle invariants and learn about De-Bruijn sequences; and pick up some new tricks.
-
-</div>
-</div>
-
-<div class="callout callout-tip">
-<div class="callout-title">Session 4: Make it Your Own</div>
-<div class="callout-body">
-
-Practice the tricks you have learned so far and challenge yourself to design new tricks based on the principles you have learned so far.
-
-</div>
-</div>
 

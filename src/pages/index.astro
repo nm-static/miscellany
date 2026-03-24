@@ -1,23 +1,139 @@
 ---
-import CtaGlow from "@/docs/components/cta/CtaGlow.astro";
-import Hero from "@/docs/components/hero/Hero.astro";
-import { docsRoute } from "@/docs/js/docsUtils";
-import { getLocaleFromUrl } from "@/docs/js/localeUtils";
-import { getLocalizedRoute, getTranslatedData } from "@/docs/js/translationUtils";
-import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
+export const prerender = true;
 
-const currLocale = getLocaleFromUrl(Astro.url);
-const siteData = getTranslatedData("siteData", currLocale);
+import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
+import { getTranslatedData } from "@/docs/js/translationUtils";
+import { getRouteForTab } from "@/docs/js/docsUtils";
+import { defaultLocale } from "@/docs/config/siteSettings.json";
+
+const sidebarData = getTranslatedData("sidebarNavData", defaultLocale);
+const tabs = sidebarData.tabs;
+
+// Build group metadata for filter tabs
+const groupOrder = ["recreational-math", "schools", "scicomm", "soft-skills", "other"];
+const groupLabels: Record<string, string> = {
+  "recreational-math": "Recreational Math",
+  "schools": "Schools",
+  "scicomm": "Science Communication",
+  "soft-skills": "Soft Skills",
+  "other": "Other",
+};
+
+// Build course cards data
+const courses = tabs.map((tab: any) => ({
+  id: tab.id,
+  title: tab.title,
+  description: tab.description || "",
+  group: tab.group || "other",
+  groupLabel: groupLabels[tab.group] || tab.group,
+  icon: tab.icon,
+  href: `/${getRouteForTab(tab.id, defaultLocale)}/${tab.id}/`,
+}));
 ---
 
-<BaseLayoutDocs title={siteData.title} description={siteData.description}>
-  <main class="overflow-hidden">
-    <Hero />
-    <CtaGlow
-      title="Explore the courses"
-      description="Browse through the various short courses, workshops, and miscellaneous teaching offerings."
-      primaryLink={getLocalizedRoute(currLocale, `/${docsRoute}/about`)}
-      githubLink="https://github.com/neeldhara"
-    />
+<BaseLayoutDocs title="Short Courses and Miscellany" description="Short courses, workshops, and miscellaneous teaching offerings by Neeldhara Misra.">
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
+      <div class="max-w-4xl mx-auto px-6 relative">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+          Short Courses & Miscellany
+        </h1>
+        <p class="text-xl md:text-2xl text-muted-foreground font-medium mb-8">
+          A collection of workshops, short courses, and other teaching offerings.
+        </p>
+        <p class="text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
+          Browse through various courses spanning recreational mathematics,
+          science communication, research skills, and more.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#courses" class="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
+            Browse Courses
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-16 md:py-24 bg-muted/30 border-t">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Courses</h2>
+
+        <!-- Group Filter -->
+        <div class="flex flex-wrap justify-center gap-2 mb-10" id="group-filter">
+          <button
+            data-group="all"
+            class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-colors bg-primary text-primary-foreground"
+          >
+            All
+          </button>
+          {groupOrder.map((group) => (
+            <button
+              data-group={group}
+              class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+            >
+              {groupLabels[group]}
+            </button>
+          ))}
+        </div>
+
+        <!-- Course Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="course-grid">
+          {courses.map((course: any) => (
+            <a
+              href={course.href}
+              data-group={course.group}
+              class="course-card group p-6 rounded-xl border bg-card hover:border-primary/50 hover:shadow-lg transition-all"
+            >
+              <span class="text-xs font-semibold uppercase tracking-wider text-primary">
+                {course.groupLabel}
+              </span>
+              <h3 class="text-lg font-semibold mt-2 mb-2 group-hover:text-primary transition-colors">
+                {course.title}
+              </h3>
+              {course.description && (
+                <p class="text-sm text-muted-foreground line-clamp-2">
+                  {course.description}
+                </p>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   </main>
 </BaseLayoutDocs>
+
+<script>
+  function initFilter() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.course-card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.group;
+
+        // Update active button styles
+        buttons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-primary-foreground');
+          b.classList.add('text-muted-foreground', 'hover:text-foreground', 'hover:bg-muted');
+        });
+        btn.classList.add('bg-primary', 'text-primary-foreground');
+        btn.classList.remove('text-muted-foreground', 'hover:text-foreground', 'hover:bg-muted');
+
+        // Filter cards
+        cards.forEach(card => {
+          if (group === 'all' || card.dataset.group === group) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  initFilter();
+  document.addEventListener('astro:after-swap', initFilter);
+</script>

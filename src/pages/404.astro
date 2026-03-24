@@ -3,7 +3,6 @@ import astronaut from "@images/404/astronaut-nobg.png";
 import { Image } from "astro:assets";
 
 import Button from "@/docs/components/button/Button.astro";
-import { docsRoute } from "@/docs/js/docsUtils";
 import { getLocaleFromUrl } from "@/docs/js/localeUtils";
 import { getLocalizedRoute } from "@/docs/js/translationUtils";
 import BaseLayoutDocs from "@/docs/layouts/BaseLayoutDocs.astro";
@@ -42,7 +41,7 @@ const currLocale = getLocaleFromUrl(Astro.url);
           <!-- Action Buttons -->
           <div class="flex flex-wrap justify-center gap-4">
             <Button
-              href={getLocalizedRoute(currLocale, `/${docsRoute}/getting-started/`)}
+              href={getLocalizedRoute(currLocale, `/`)}
               variant="secondary"
             >
               Return Home

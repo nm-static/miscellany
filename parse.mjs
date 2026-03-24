@@ -277,7 +277,12 @@ function objectToYaml(obj, indent = 0) {
       yaml += `${spaces}${key}:\n`;
       yaml += objectToYaml(value, indent + 1);
     } else if (typeof value === "string") {
-      yaml += `${spaces}${key}: "${value}"\n`;
+      // Coerce numeric strings to numbers (e.g. sidebar-order: "1" → order: 1)
+      if (/^\d+$/.test(value)) {
+        yaml += `${spaces}${key}: ${parseInt(value, 10)}\n`;
+      } else {
+        yaml += `${spaces}${key}: "${value}"\n`;
+      }
     } else if (typeof value === "boolean" || typeof value === "number") {
       yaml += `${spaces}${key}: ${value}\n`;
     }
@@ -384,28 +389,112 @@ function processFile(filePath, sectionName, options = {}) {
     output = generateFrontmatter(frontmatter) + transformedBody;
   } else {
     // For subpages, inherit theme/section from parent and extract title from first heading
-    const titleMatch = body.match(/^#\s+(.+)$/m);
-    const title = titleMatch ? titleMatch[1] : path.basename(filePath, '.md');
+    // Check for any heading level (# through ######)
+    const titleMatch = body.match(/^#{1,6}\s+(.+)$/m);
+    const title = frontmatter.title || (titleMatch ? titleMatch[1] : path.basename(filePath, '.md'));
     const mergedFrontmatter = {
       ...parentFrontmatter,
       ...frontmatter,
-      title: frontmatter.title || title,
+      title,
     };
 
-    // Generate sidebar label from filename (e.g., "m1" -> "Module 1")
+    // Support flat sidebar keys from Obsidian: sidebar-order, sidebar-label, sidebar-hidden
+    const expandedFm = expandFlatKeys(frontmatter);
+    const sidebarConfig = expandedFm.sidebar || frontmatter.sidebar || {};
+    const sidebarObj = typeof sidebarConfig === 'object' ? sidebarConfig : {};
+
+    // Determine sidebar order: explicit sidebar-order > auto from subpageOrder
+    const explicitOrder = sidebarObj.order !== undefined ? parseInt(sidebarObj.order, 10) : undefined;
+    const finalOrder = explicitOrder !== undefined ? explicitOrder : subpageOrder;
+
+    // Generate sidebar label: explicit sidebar-label > frontmatter title > module pattern > heading > filename
     const filename = path.basename(filePath, '.md');
     const moduleMatch = filename.match(/^m(\d+)$/);
-    const sidebarLabel = moduleMatch ? `Module ${moduleMatch[1]}` : title;
+    const sidebarLabel = sidebarObj.label || (moduleMatch ? `Module ${moduleMatch[1]}` : title);
 
     output = generateSubpageFrontmatter(mergedFrontmatter, title, {
       isOneOff,
-      sidebarOrder: subpageOrder,
+      sidebarOrder: finalOrder,
       sidebarLabel: isOneOff ? sidebarLabel : null,
-      sourceSidebar: frontmatter.sidebar, // Pass source sidebar config to respect hidden flag
+      sourceSidebar: sidebarObj,
     }) + transformedBody;
   }
 
   return output;
+}
+
+// ── Update sidebarNavData.json.ts with vault titles/descriptions ──
+function updateSidebarNavData(folders) {
+  const sidebarNavPath = path.join(
+    path.dirname(new URL(import.meta.url).pathname),
+    "src/docs/config/en/sidebarNavData.json.ts"
+  );
+
+  if (!fs.existsSync(sidebarNavPath)) {
+    log(`  Warning: sidebarNavData.json.ts not found, skipping update`);
+    return;
+  }
+
+  let content = fs.readFileSync(sidebarNavPath, "utf-8");
+  let updated = false;
+
+  for (const folder of folders) {
+    const sectionName = folder.name;
+    const publicMdPath = path.join(VAULT, sectionName, "public.md");
+    if (!fs.existsSync(publicMdPath)) continue;
+
+    const { data: fm } = matter(fs.readFileSync(publicMdPath, "utf-8"));
+    const title = (fm.title || "").replace(/^"|"$/g, "");
+    const description = (fm.description || "").replace(/^"|"$/g, "");
+
+    if (!title) continue;
+
+    // Update tab title: match id line then the title line after it
+    // Pattern: id: "sectionName",\n      group: "...",\n      title: "...",
+    const tabTitleRegex = new RegExp(
+      `(id: "${sectionName}",\\n\\s+group: "[^"]*",\\n\\s+title: )"[^"]*"`,
+    );
+    if (tabTitleRegex.test(content)) {
+      const before = content;
+      content = content.replace(tabTitleRegex, `$1"${title}"`);
+      if (content !== before) {
+        log(`  Updated tab title for ${sectionName}: "${title}"`);
+        updated = true;
+      }
+    }
+
+    // Update section title (inside sections array)
+    const sectionTitleRegex = new RegExp(
+      `(id: "${sectionName}",\\n\\s+title: )"[^"]*"(,?\\n\\s+\\})`,
+    );
+    if (sectionTitleRegex.test(content)) {
+      const before = content;
+      content = content.replace(sectionTitleRegex, `$1"${title}"$2`);
+      if (content !== before) updated = true;
+    }
+
+    // Update description if present in vault
+    if (description) {
+      const descRegex = new RegExp(
+        `(id: "${sectionName}",\\n\\s+group: "[^"]*",\\n\\s+title: "[^"]*",\\n\\s+description: )"[^"]*"`,
+      );
+      if (descRegex.test(content)) {
+        const before = content;
+        content = content.replace(descRegex, `$1"${description}"`);
+        if (content !== before) {
+          log(`  Updated description for ${sectionName}`);
+          updated = true;
+        }
+      }
+    }
+  }
+
+  if (updated && !dryRun) {
+    fs.writeFileSync(sidebarNavPath, content, "utf-8");
+    log(`\nUpdated sidebarNavData.json.ts`);
+  } else if (updated && dryRun) {
+    logDry(`Would update sidebarNavData.json.ts`);
+  }
 }
 
 // ── Main ──
@@ -461,13 +550,23 @@ function main() {
     const publicContent = fs.readFileSync(publicMdPath, "utf-8");
     const { data: parentFrontmatter } = matter(publicContent);
 
-    // Check if this is a "one-off" course (theme equals folder name)
-    const isOneOff = parentFrontmatter.theme === sectionName;
-    if (isOneOff) {
-      log(`  Processing: ${sectionName}/public.md (one-off course)`);
-    } else {
-      log(`  Processing: ${sectionName}/public.md`);
+    // Default section and theme to folder name if not set
+    // With 3-level nesting, each course folder is its own tab,
+    // so section must equal the folder name for sidebar routing.
+    // theme must equal the folder name for subpages to be visible.
+    if (!parentFrontmatter.section || parentFrontmatter.section !== sectionName) {
+      if (parentFrontmatter.section && parentFrontmatter.section !== sectionName) {
+        log(`    Warning: section "${parentFrontmatter.section}" overridden to "${sectionName}" (must match folder name)`);
+      }
+      parentFrontmatter.section = sectionName;
     }
+    if (!parentFrontmatter.theme) {
+      parentFrontmatter.theme = sectionName;
+    }
+
+    // With the 3-level nesting model, all courses are one-off by default
+    const isOneOff = true;
+    log(`  Processing: ${sectionName}/public.md`);
 
     // Process main index page
     const output = processFile(publicMdPath, sectionName, { isIndex: true });
@@ -512,6 +611,9 @@ function main() {
   }
 
   log(`\nProcessed ${processedCount} files`);
+
+  // Update sidebarNavData.json.ts with titles/descriptions from vault
+  updateSidebarNavData(folders);
 
   // Copy images to public folder
   if (imagesToCopy.size > 0) {

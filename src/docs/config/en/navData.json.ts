@@ -1,5 +1,6 @@
 /**
  * * This file is used to define the navigation links for the documentation site.
+ * Links use the group name as the route prefix.
  */
 
 // types
@@ -8,23 +9,23 @@ import { type navItem } from "../types/configDataTypes";
 const navConfig: navItem[] = [
   {
     text: "Recreational Math",
-    link: "/docs/cards-combinatorics-1/",
+    link: "/recreational-math/cards-combinatorics-1/",
   },
   {
     text: "Schools",
-    link: "/docs/gian/",
+    link: "/schools/gian/",
   },
   {
     text: "Science Communication",
-    link: "/docs/visual-scicomm/",
+    link: "/scicomm/visual-scicomm/",
   },
   {
-    text: "CS Research 101",
-    link: "/docs/cs-research-101/",
+    text: "Soft Skills",
+    link: "/soft-skills/cs-research-101/",
   },
   {
     text: "Other",
-    link: "/docs/crypto/",
+    link: "/other/crypto/",
   },
 ];
 
