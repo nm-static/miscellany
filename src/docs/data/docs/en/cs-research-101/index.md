@@ -6,6 +6,7 @@ theme: "soft-skills"
 section: "cs-research-101"
 sidebar:
   label: "Overview"
+  order: 1
   order: 0
 ---
 

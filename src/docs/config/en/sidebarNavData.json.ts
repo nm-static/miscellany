@@ -143,6 +143,21 @@ const sidebarNavData: DocsSidebarNavData = {
         },
       ],
     },
+
+    {
+      id: "kasuti-embroidery",
+      group: "recreational-math",
+      title: "2026 · Poems and Pixels",
+      description: "An introduction to Kasuti embroidery as both craft and contemplative practice",
+      instructor: "Priyamvada Trivedi",
+      icon: "tabler/flame",
+      sections: [
+        {
+          id: "kasuti-embroidery",
+          title: "2026 · Poems and Pixels",
+        },
+      ],
+    },
   ],
 };
 

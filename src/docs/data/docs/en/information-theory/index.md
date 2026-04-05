@@ -5,6 +5,7 @@ theme: "other"
 section: "information-theory"
 sidebar:
   label: "Overview"
+  order: 1
 ---
 
 ## Classical Information Theory

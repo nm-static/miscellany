@@ -6,6 +6,7 @@ theme: "other"
 section: "dp-bootcamp"
 sidebar:
   label: "Overview"
+  order: 1
   order: 2
 ---
 

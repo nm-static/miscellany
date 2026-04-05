@@ -6,6 +6,7 @@ theme: "other"
 section: "crypto"
 sidebar:
   label: "Overview"
+  order: 1
 ---
 
 

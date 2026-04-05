@@ -6,6 +6,7 @@ theme: "scicomm"
 section: "visual-scicomm"
 sidebar:
   label: "Overview"
+  order: 1
 ---
 
 

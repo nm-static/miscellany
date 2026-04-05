@@ -317,6 +317,7 @@ function generateFrontmatter(data) {
   // Sidebar configuration - always add "Overview" label for index pages
   yaml += `sidebar:\n`;
   yaml += `  label: "Overview"\n`;
+  yaml += `  order: 1\n`;
   if (expanded.sidebar && typeof expanded.sidebar === "object") {
     // Add any other sidebar properties from source (excluding label which we override)
     const { label, ...rest } = expanded.sidebar;
@@ -444,7 +445,7 @@ function updateSidebarNavData(folders) {
     if (!fs.existsSync(publicMdPath)) continue;
 
     const { data: fm } = matter(fs.readFileSync(publicMdPath, "utf-8"));
-    const title = (fm.title || "").replace(/^"|"$/g, "");
+    const title = (fm["sidebar-title"] || fm.title || "").replace(/^"|"$/g, "");
     const description = (fm.description || "").replace(/^"|"$/g, "");
 
     if (!title) continue;

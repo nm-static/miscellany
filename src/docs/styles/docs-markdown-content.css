@@ -30,7 +30,7 @@
   .docs-markdown-content
     :not(strong, em, del, span, input, code, li, br)
     + :not(strong, em, del, span, input, code, li, br, :where(.not-content, .not-content *)) {
-    @apply mt-4;
+    @apply mt-6;
   }
 
   /* Headings after non-headings have more spacing. */
@@ -254,6 +254,10 @@
 
   .docs-markdown-content .callout-body p:not(:where(.not-content, .not-content *)) {
     @apply mt-0;
+  }
+
+  .docs-markdown-content .callout-body p + p:not(:where(.not-content, .not-content *)) {
+    @apply mt-4;
   }
 
   /* Callout variants */
