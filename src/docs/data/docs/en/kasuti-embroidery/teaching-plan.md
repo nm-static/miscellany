@@ -11,6 +11,8 @@ sidebar:
 
 ### Teaching Plan
 
+<img src="/images/docs/kasuti-embroidery/kasuti-pattern-1.jpg" alt="kasuti-pattern-1.jpg" style="width: 400px; max-width: 100%;" />
+
 <div class="callout callout-tip">
 <div class="callout-title">Session 1: Beginning with the Grid</div>
 <div class="callout-body">

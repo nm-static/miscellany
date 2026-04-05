@@ -14,6 +14,8 @@ sidebar:
 ###### A Short Course on Kasuti Embroidery
 _Dr. Priyamvada Trivedi, researcher and artist_
 
+<img src="/images/docs/kasuti-embroidery/kasuti-sample-1.jpg" alt="kasuti-sample-1.jpg" style="width: 400px; max-width: 100%;" />
+
 <details class="callout callout-note" open>
 <summary class="callout-title">About the Course</summary>
 <div class="callout-body">
