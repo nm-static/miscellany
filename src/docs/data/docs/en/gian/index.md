@@ -7,7 +7,6 @@ section: "gian"
 sidebar:
   label: "Overview"
   order: 1
-  order: 1
 ---
 
 

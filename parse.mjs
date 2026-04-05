@@ -320,7 +320,7 @@ function generateFrontmatter(data) {
   yaml += `  order: 1\n`;
   if (expanded.sidebar && typeof expanded.sidebar === "object") {
     // Add any other sidebar properties from source (excluding label which we override)
-    const { label, ...rest } = expanded.sidebar;
+    const { label, order, ...rest } = expanded.sidebar;
     if (Object.keys(rest).length > 0) {
       yaml += objectToYaml(rest, 1);
     }

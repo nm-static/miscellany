@@ -7,7 +7,6 @@ section: "cards-combinatorics-1"
 sidebar:
   label: "Overview"
   order: 1
-  order: 1
 ---
 
 ## Cards and Combinatorics
